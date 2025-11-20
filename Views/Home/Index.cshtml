@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "WebGIS NDVI – Không Gian Xanh Củ Chi";
+}
+
+<h1>WEBGIS NDVI – KHÔNG GIAN XANH CỦ CHI</h1>
+<p>NDVI Sentinel-2, không gian xanh: NDVI ≥ 0.4</p>
+
+<!-- Panel UI (tương tự GEE) -->
+<div id="panel" style="position: absolute; top: 10px; right: 10px; width: 260px; background: white; padding: 10px; border: 1px solid #ccc; z-index: 1000;">
+    <label style="font-weight: bold;">Chọn năm:</label>
+    <select id="yearSelect" style="width: 100%;">
+        <!-- Options sẽ được thêm bằng JS -->
+    </select>
+    <div id="infoLabel" style="margin-top: 10px; font-size: 12px;"></div>
+    <canvas id="chart" style="margin-top: 10px; width: 100%; height: 200px;"></canvas>
+</div>
+
+<!-- Bản đồ Leaflet -->
+<div id="map" style="height: 600px;"></div>
+
+<!-- Scripts -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Khởi tạo bản đồ (tương tự GEE, trung tâm Củ Chi)
+    var map = L.map('map').setView([10.97, 106.51], 11);  // Tọa độ Củ Chi
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Biến toàn cục
+    var geoJsonData = null;
+    var currentLayer = null;
+    var chartInstance = null;
+
+    // Tải GeoJSON từ server
+    fetch('/Home/GetGreenStats')  // Hoặc trực tiếp: '/data/CuChi_Green_2019_2025.geojson'
+        .then(response => response.json())
+        .then(data => {
+            geoJsonData = data;
+            initUI();
+            updateYear('2019');  // Mặc định năm đầu
+        })
+        .catch(error => console.error('Lỗi tải GeoJSON:', error));
+
+    // Khởi tạo dropdown năm
+    function initUI() {
+        var years = geoJsonData.features.map(f => f.properties.year.toString());
+        var select = document.getElementById('yearSelect');
+        years.forEach(year => {
+            var option = document.createElement('option');
+            option.value = year;
+            option.text = year;
+            select.appendChild(option);
+        });
+        select.addEventListener('change', function() {
+            updateYear(this.value);
+        });
+
+        // Khởi tạo biểu đồ
+        var ctx = document.getElementById('chart').getContext('2d');
+        var chartData = geoJsonData.features.map(f => ({
+            year: f.properties.year,
+            area: f.properties.green_area_km2
+        })).sort((a, b) => a.year - b.year);
+
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.map(d => d.year),
+                datasets: [{
+                    label: 'Diện tích xanh (km²)',
+                    data: chartData.map(d => d.area),
+                    borderColor: 'green',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Năm' } },
+                    y: { title: { display: true, text: 'Diện tích xanh (km²)' } }
+                }
+            }
+        });
+    }
+
+    // Cập nhật theo năm (tương tự GEE)
+    function updateYear(yearStr) {
+        var yearNum = parseInt(yearStr);
+        var feature = geoJsonData.features.find(f => f.properties.year === yearNum);
+        if (!feature) return;
+
+        // Xóa layer cũ
+        if (currentLayer) map.removeLayer(currentLayer);
+
+        // Thêm layer ranh giới huyện (từ GeoJSON geometry)
+        currentLayer = L.geoJSON(feature.geometry, {
+            style: { color: 'red', weight: 2 }
+        }).addTo(map);
+
+        // Cập nhật info
+        var p = feature.properties;
+        var text = 'Năm ' + p.year + ': diện tích không gian xanh ≈ ' + p.green_area_km2.toFixed(2) + ' km² (' +
+            (p.green_ratio * 100).toFixed(1) + '% diện tích huyện)';
+        if (p.last_data_month) text += ' – Dữ liệu Sentinel-2 đến ' + p.last_data_month;
+        document.getElementById('infoLabel').innerText = text;
+
+        // (Tùy chọn) Thêm overlay NDVI nếu có tile layer từ GEE export (cần URL tile nếu export ảnh)
+        // Ví dụ: L.tileLayer('URL từ GEE export').addTo(map);
+    }
+</script>
