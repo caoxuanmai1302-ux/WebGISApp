@@ -1,48 +1,50 @@
 ﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebGIS Không Gian Xanh Củ Chi</title>
+
+    <link rel="stylesheet" href="style.css">
 
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <!-- SIDEBAR COLLAPSE BUTTON -->
+    <!-- COLLAPSE BUTTON -->
     <div id="toggle-btn"><i class="fas fa-bars"></i></div>
 
     <!-- SIDEBAR -->
     <div id="sidebar">
-        <h2>🌿 WebGIS Củ Chi</h2>
+        <h2>🌿 Không Gian Xanh Củ Chi</h2>
 
-        <!-- YEAR SELECT -->
-        <label>Năm phân tích:</label>
+        <label class="label">Chọn năm:</label>
         <select id="yearSelect"></select>
 
-        <!-- MINI STATS -->
         <div id="miniStats">
             <h3>📊 Thống kê nhanh</h3>
+
             <div class="stat-box">
                 <p>Diện tích xanh:</p>
                 <h2 id="areaValue">-- km²</h2>
             </div>
+
             <div class="stat-box">
-                <p>Tăng/Giảm:</p>
-                <h2 id="changeValue">-- %</h2>
+                <p>Tỷ lệ xanh:</p>
+                <h2 id="ratioValue">-- %</h2>
             </div>
+
             <div class="stat-box">
-                <p>Tháng dữ liệu gần nhất:</p>
+                <p>Dữ liệu gần nhất:</p>
                 <h2 id="monthValue">--</h2>
             </div>
         </div>
@@ -50,10 +52,22 @@
         <!-- LEGEND -->
         <div id="legend">
             <h3>🗺️ Chú giải</h3>
-            <div class="legend-item"><span class="color-box c1"></span> NDVI cao (Xanh lá đậm)</div>
-            <div class="legend-item"><span class="color-box c2"></span> NDVI trung bình</div>
-            <div class="legend-item"><span class="color-box c3"></span> NDVI thấp</div>
-            <div class="legend-item"><span class="color-box border"></span> Ranh giới Củ Chi</div>
+
+            <div class="legend-item">
+                <span class="color-box c1"></span> NDVI cao
+            </div>
+
+            <div class="legend-item">
+                <span class="color-box c2"></span> NDVI trung bình
+            </div>
+
+            <div class="legend-item">
+                <span class="color-box c3"></span> NDVI thấp
+            </div>
+
+            <div class="legend-item">
+                <span class="color-box border"></span> Ranh giới Củ Chi
+            </div>
         </div>
 
         <!-- COMPARE -->
@@ -68,13 +82,13 @@
     <!-- MAP -->
     <div id="map"></div>
 
-    <!-- CHART PANEL -->
+    <!-- CHART -->
     <div id="chartPanel">
         <h3>📈 Diện tích xanh theo năm</h3>
         <canvas id="chart"></canvas>
     </div>
 
-    <!-- LOADING SPINNER -->
+    <!-- LOADING -->
     <div id="loading">
         <div class="spinner"></div>
     </div>
@@ -83,9 +97,9 @@
     <div id="chatbox">
         <div id="chatHeader">MaiBot 🤖</div>
         <div id="chatContent">
-            <p>Chào Mai! Mình là trợ lý WebGIS nè 💗</p>
+            <p>Chào Mai yêu 💗 Mình là bot hỗ trợ WebGIS nè!</p>
         </div>
-        <input id="chatInput" placeholder="Nhập tin nhắn…" />
+        <input id="chatInput" placeholder="Gõ gì đó hỏi mình đi…" />
     </div>
 
     <script src="app.js"></script>

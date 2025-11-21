@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "bmgSM5hlL+YjxMD5mO4CHGozU7Zr1pPR0tOdW8rGgBU=",
+  "Hash": "w3dwxSiXQpyoaGyMzobEzd8rSrRYCDzKNhpBuo+oryI=",
   "Source": "WebGISApp",
   "BasePath": "_content/WebGISApp",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\data\\CuChi_Green_2019_2025.geojson"
+    },
+    {
+      "Identity": "d:\\WebGISApp\\wwwroot\\data\\green.json",
+      "SourceId": "WebGISApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "d:\\WebGISApp\\wwwroot\\",
+      "BasePath": "_content/WebGISApp",
+      "RelativePath": "data/green.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\data\\green.json"
     },
     {
       "Identity": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\green_2019.tif",

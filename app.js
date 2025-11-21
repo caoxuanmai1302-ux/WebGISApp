@@ -1,97 +1,90 @@
-// ======================= MAP INIT ==========================
-var map = L.map('map').setView([11.05, 106.5], 11);
-
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19
-}).addTo(map);
-
-// ======================= SIDEBAR COLLAPSE ===================
-document.getElementById("toggle-btn").onclick = () => {
-    const sb = document.getElementById("sidebar");
-    if (sb.style.left === "-300px") {
-        sb.style.left = "0px";
-        document.getElementById("map").style.left = "300px";
-    } else {
-        sb.style.left = "-300px";
-        document.getElementById("map").style.left = "0px";
-    }
+// NDVI Tile URLs (Mai cung cấp)
+const tileUrl = {
+    "2019": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/d86b7abc5a0f6d627e9319737fafc41e-1353aa6d5be8825fb66bb21003e4a220/tiles/{z}/{x}/{y}",
+    "2020": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/621ac58fc80c258a9d146fbdd3839e04-126f7968c1aac141a26470ac019017bb/tiles/{z}/{x}/{y}",
+    "2021": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/cdfb26dc0063b9c8cba8f80f1eefacfe-093a0daa92735c9401c82c9fff44f2da/tiles/{z}/{x}/{y}",
+    "2022": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/de552719606604aba0e6dc86debc0d01-acdf441fa4e4feb5454dca99d89c617f/tiles/{z}/{x}/{y}",
+    "2023": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/fe91851156364e9304b4c95c8471a45e-04dcf65190e1046a763236f555ea003a/tiles/{z}/{x}/{y}",
+    "2024": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/a731efd281d8676a26a1e1f14f97635d-c84fe9bd0b1821340e036d032eed8296/tiles/{z}/{x}/{y}",
+    "2025": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/352d9395a9c82864f0b8dbf61a904b57-8ddf0bef60173e202a343a19f3486a9c/tiles/{z}/{x}/{y}"
 };
 
-// ======================= YEAR SELECT ========================
-const years = [2019,2020,2021,2022,2023,2024,2025];
-const select = document.getElementById("yearSelect");
-const selectA = document.getElementById("yearA");
-const selectB = document.getElementById("yearB");
+// MAP
+var map = L.map("map").setView([11.0, 106.5], 11);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
-years.forEach(y => {
-    select.innerHTML += `<option>${y}</option>`;
-    selectA.innerHTML += `<option>${y}</option>`;
-    selectB.innerHTML += `<option>${y}</option>`;
-});
+// Layers
+let boundaryLayer = null;
+let ndviLayer = null;
 
-// ======================= CHART =============================
-const chart = new Chart(document.getElementById("chart"), {
-    type: 'line',
-    data: {
-        labels: years,
-        datasets: [{
-            label: "Diện tích xanh (km²)",
-            data: [300,280,310,330,290,295,315],
-            borderWidth: 3,
-            borderColor: "#008000",
-            backgroundColor: "#90ee90",
-            tension: 0.3,
-            pointRadius: 5
-        }]
-    }
-});
+// Load GeoJSON
+fetch("data/green.json")
+    .then(res => res.json())
+    .then(json => initWebGIS(json));
 
-// ======================= RESET VIEW ========================
-function resetView(){
-    map.setView([11.05,106.5],11);
+// INIT
+function initWebGIS(data) {
+    const years = data.features.map(f => f.properties.year);
+
+    // Fill selects
+    let ySel = document.getElementById("yearSelect");
+    let yA = document.getElementById("yearA");
+    let yB = document.getElementById("yearB");
+
+    years.forEach(y => {
+        ySel.innerHTML += `<option>${y}</option>`;
+        yA.innerHTML += `<option>${y}</option>`;
+        yB.innerHTML += `<option>${y}</option>`;
+    });
+
+    // Chart
+    drawChart(data);
+
+    // Load initial
+    updateYear(data, years[0]);
+
+    ySel.onchange = () => updateYear(data, ySel.value);
 }
 
-// ======================= SIMULATED NDVI LAYER ====================
-let boundary = null;
+// UPDATE YEAR
+function updateYear(data, year) {
+    let f = data.features.find(x => x.properties.year == year);
 
-// Fake ranh giới Củ Chi
-fetch("https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements.geojson")
-.then(r=>r.json()).then(data =>{
-    boundary = L.geoJSON(data.features[0],{
-        style:{
-            color:"red",
-            weight:3,
-            fillColor:"#ff91c2",
-            fillOpacity:0.3
-        }
+    // Boundary
+    if (boundaryLayer) map.removeLayer(boundaryLayer);
+    boundaryLayer = L.geoJSON(f.geometry, {
+        style: { color: "red", weight: 3 }
     }).addTo(map);
-});
+    map.fitBounds(boundaryLayer.getBounds());
 
-// =================== MINI STATS UPDATE ======================
-function updateStats(){
-    const area=[300,280,310,330,290,295,315];
-    const idx = select.selectedIndex;
+    // NDVI
+    if (ndviLayer) map.removeLayer(ndviLayer);
+    ndviLayer = L.tileLayer(tileUrl[year], { opacity: 0.65 }).addTo(map);
 
-    document.getElementById("areaValue").innerText = area[idx] + " km²";
-    document.getElementById("changeValue").innerText =
-        (idx>0? (((area[idx]-area[idx-1])/area[idx-1])*100).toFixed(1)+"%" : "--");
-    document.getElementById("monthValue").innerText = (5 + idx) + "";
+    // Mini stats
+    document.getElementById("areaValue").textContent = f.properties.green_area_km2.toFixed(2) + " km²";
+    document.getElementById("ratioValue").textContent = (f.properties.green_ratio * 100).toFixed(1) + "%";
+    document.getElementById("monthValue").textContent = f.properties.last_data_month;
 }
 
-select.onchange = updateStats;
-updateStats();
+// CHART
+function drawChart(data) {
+    let years = data.features.map(f => f.properties.year);
+    let areas = data.features.map(f => f.properties.green_area_km2);
 
-// =================== CHATBOX SIMPLE BOT =====================
-document.getElementById("chatInput").addEventListener("keydown", function(e){
-    if(e.key==="Enter"){
-        const msg = this.value;
-        if(msg.trim()==="") return;
-
-        document.getElementById("chatContent").innerHTML += `<p><b>Mai:</b> ${msg}</p>`;
-        this.value="";
-
-        setTimeout(()=>{
-            document.getElementById("chatContent").innerHTML += `<p><b>Bot:</b> Mình hiểu rồi nè 💗</p>`;
-        },500);
-    }
-});
+    new Chart(document.getElementById("chart"), {
+        type: "line",
+        data: {
+            labels: years,
+            datasets: [{
+                label: "Diện tích xanh (km²)",
+                data: areas,
+                borderColor: "#ff4f95",
+                backgroundColor: "#ffb8d9",
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4
+            }]
+        }
+    });
+}

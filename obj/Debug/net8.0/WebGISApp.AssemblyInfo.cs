@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebGISApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+97ee87430803cc5f67523a0d9168d92aee0e0bed")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b4034f7341a6f88ef128e1bbb60a9d91078d0501")]
 [assembly: System.Reflection.AssemblyProductAttribute("WebGISApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebGISApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

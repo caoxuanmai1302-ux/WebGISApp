@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\data\\CuChi_Green_2019_2025.geojson"
     },
     {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\green.json",
+      "PackagePath": "staticwebassets\\data\\green.json"
+    },
+    {
       "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\green_2019.tif",
       "PackagePath": "staticwebassets\\data\\ndvi\\green_2019.tif"
     },
