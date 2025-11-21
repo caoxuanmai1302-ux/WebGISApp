@@ -13,8 +13,76 @@
       "PackagePath": "staticwebassets\\data\\CuChi_Green_2019_2025.geojson"
     },
     {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\green_2019.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\green_2019.tif"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\green_2020.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\green_2020.tif"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\green_2021.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\green_2021.tif"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\green_2022.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\green_2022.tif"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\green_2023.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\green_2023.tif"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\green_2024.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\green_2024.tif"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\green_2025.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\green_2025.tif"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\ndvi_2019.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\ndvi_2019.tif"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\ndvi_2020.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\ndvi_2020.tif"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\ndvi_2021.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\ndvi_2021.tif"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\ndvi_2022.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\ndvi_2022.tif"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\ndvi_2023.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\ndvi_2023.tif"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\ndvi_2024.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\ndvi_2024.tif"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\data\\ndvi\\ndvi_2025.tif",
+      "PackagePath": "staticwebassets\\data\\ndvi\\ndvi_2025.tif"
+    },
+    {
       "Id": "d:\\WebGISApp\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\js\\leaflet-geotiff\\geotiff.js",
+      "PackagePath": "staticwebassets\\js\\leaflet-geotiff\\geotiff.js"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\js\\leaflet-geotiff\\leaflet-geotiff-plotty.js",
+      "PackagePath": "staticwebassets\\js\\leaflet-geotiff\\leaflet-geotiff-plotty.js"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\js\\leaflet-geotiff\\leaflet-geotiff.js",
+      "PackagePath": "staticwebassets\\js\\leaflet-geotiff\\leaflet-geotiff.js"
     },
     {
       "Id": "d:\\WebGISApp\\wwwroot\\js\\site.js",

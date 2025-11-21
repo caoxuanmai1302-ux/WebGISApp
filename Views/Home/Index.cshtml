@@ -1,114 +1,93 @@
-﻿@{
-    ViewData["Title"] = "WebGIS NDVI – Không Gian Xanh Củ Chi";
-}
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebGIS Không Gian Xanh Củ Chi</title>
 
-<h1>WEBGIS NDVI – KHÔNG GIAN XANH CỦ CHI</h1>
-<p>NDVI Sentinel-2, không gian xanh: NDVI ≥ 0.4</p>
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
-<!-- Panel UI (tương tự GEE) -->
-<div id="panel" style="position: absolute; top: 10px; right: 10px; width: 260px; background: white; padding: 10px; border: 1px solid #ccc; z-index: 1000;">
-    <label style="font-weight: bold;">Chọn năm:</label>
-    <select id="yearSelect" style="width: 100%;">
-        <!-- Options sẽ được thêm bằng JS -->
-    </select>
-    <div id="infoLabel" style="margin-top: 10px; font-size: 12px;"></div>
-    <canvas id="chart" style="margin-top: 10px; width: 100%; height: 200px;"></canvas>
-</div>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Bản đồ Leaflet -->
-<div id="map" style="height: 600px;"></div>
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<!-- Scripts -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-<script>
-    // Khởi tạo bản đồ (tương tự GEE, trung tâm Củ Chi)
-    var map = L.map('map').setView([10.97, 106.51], 11);  // Tọa độ Củ Chi
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+<body>
 
-    // Biến toàn cục
-    var geoJsonData = null;
-    var currentLayer = null;
-    var chartInstance = null;
+    <!-- SIDEBAR COLLAPSE BUTTON -->
+    <div id="toggle-btn"><i class="fas fa-bars"></i></div>
 
-    // Tải GeoJSON từ server
-    fetch('/Home/GetGreenStats')  // Hoặc trực tiếp: '/data/CuChi_Green_2019_2025.geojson'
-        .then(response => response.json())
-        .then(data => {
-            geoJsonData = data;
-            initUI();
-            updateYear('2019');  // Mặc định năm đầu
-        })
-        .catch(error => console.error('Lỗi tải GeoJSON:', error));
+    <!-- SIDEBAR -->
+    <div id="sidebar">
+        <h2>🌿 WebGIS Củ Chi</h2>
 
-    // Khởi tạo dropdown năm
-    function initUI() {
-        var years = geoJsonData.features.map(f => f.properties.year.toString());
-        var select = document.getElementById('yearSelect');
-        years.forEach(year => {
-            var option = document.createElement('option');
-            option.value = year;
-            option.text = year;
-            select.appendChild(option);
-        });
-        select.addEventListener('change', function() {
-            updateYear(this.value);
-        });
+        <!-- YEAR SELECT -->
+        <label>Năm phân tích:</label>
+        <select id="yearSelect"></select>
 
-        // Khởi tạo biểu đồ
-        var ctx = document.getElementById('chart').getContext('2d');
-        var chartData = geoJsonData.features.map(f => ({
-            year: f.properties.year,
-            area: f.properties.green_area_km2
-        })).sort((a, b) => a.year - b.year);
+        <!-- MINI STATS -->
+        <div id="miniStats">
+            <h3>📊 Thống kê nhanh</h3>
+            <div class="stat-box">
+                <p>Diện tích xanh:</p>
+                <h2 id="areaValue">-- km²</h2>
+            </div>
+            <div class="stat-box">
+                <p>Tăng/Giảm:</p>
+                <h2 id="changeValue">-- %</h2>
+            </div>
+            <div class="stat-box">
+                <p>Tháng dữ liệu gần nhất:</p>
+                <h2 id="monthValue">--</h2>
+            </div>
+        </div>
 
-        chartInstance = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: chartData.map(d => d.year),
-                datasets: [{
-                    label: 'Diện tích xanh (km²)',
-                    data: chartData.map(d => d.area),
-                    borderColor: 'green',
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: { title: { display: true, text: 'Năm' } },
-                    y: { title: { display: true, text: 'Diện tích xanh (km²)' } }
-                }
-            }
-        });
-    }
+        <!-- LEGEND -->
+        <div id="legend">
+            <h3>🗺️ Chú giải</h3>
+            <div class="legend-item"><span class="color-box c1"></span> NDVI cao (Xanh lá đậm)</div>
+            <div class="legend-item"><span class="color-box c2"></span> NDVI trung bình</div>
+            <div class="legend-item"><span class="color-box c3"></span> NDVI thấp</div>
+            <div class="legend-item"><span class="color-box border"></span> Ranh giới Củ Chi</div>
+        </div>
 
-    // Cập nhật theo năm (tương tự GEE)
-    function updateYear(yearStr) {
-        var yearNum = parseInt(yearStr);
-        var feature = geoJsonData.features.find(f => f.properties.year === yearNum);
-        if (!feature) return;
+        <!-- COMPARE -->
+        <div id="compare">
+            <h3>🔍 So sánh 2 năm</h3>
+            <select id="yearA"></select>
+            <select id="yearB"></select>
+            <button id="compareBtn">So sánh</button>
+        </div>
+    </div>
 
-        // Xóa layer cũ
-        if (currentLayer) map.removeLayer(currentLayer);
+    <!-- MAP -->
+    <div id="map"></div>
 
-        // Thêm layer ranh giới huyện (từ GeoJSON geometry)
-        currentLayer = L.geoJSON(feature.geometry, {
-            style: { color: 'red', weight: 2 }
-        }).addTo(map);
+    <!-- CHART PANEL -->
+    <div id="chartPanel">
+        <h3>📈 Diện tích xanh theo năm</h3>
+        <canvas id="chart"></canvas>
+    </div>
 
-        // Cập nhật info
-        var p = feature.properties;
-        var text = 'Năm ' + p.year + ': diện tích không gian xanh ≈ ' + p.green_area_km2.toFixed(2) + ' km² (' +
-            (p.green_ratio * 100).toFixed(1) + '% diện tích huyện)';
-        if (p.last_data_month) text += ' – Dữ liệu Sentinel-2 đến ' + p.last_data_month;
-        document.getElementById('infoLabel').innerText = text;
+    <!-- LOADING SPINNER -->
+    <div id="loading">
+        <div class="spinner"></div>
+    </div>
 
-        // (Tùy chọn) Thêm overlay NDVI nếu có tile layer từ GEE export (cần URL tile nếu export ảnh)
-        // Ví dụ: L.tileLayer('URL từ GEE export').addTo(map);
-    }
-</script>
+    <!-- CHATBOT -->
+    <div id="chatbox">
+        <div id="chatHeader">MaiBot 🤖</div>
+        <div id="chatContent">
+            <p>Chào Mai! Mình là trợ lý WebGIS nè 💗</p>
+        </div>
+        <input id="chatInput" placeholder="Nhập tin nhắn…" />
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

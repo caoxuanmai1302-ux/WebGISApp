@@ -1,0 +1,116 @@
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: #ffeef7;
+}
+
+/* MAP */
+#map {
+    position: absolute;
+    top: 0;
+    left: 300px;
+    right: 0;
+    bottom: 0;
+}
+
+/* SIDEBAR */
+#sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    bottom: 0;
+    background: white;
+    padding: 20px;
+    overflow-y: auto;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+#toggle-btn {
+    position: absolute;
+    left: 10px;
+    top: 15px;
+    padding: 10px;
+    background: #ff7bb1;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    z-index: 999;
+}
+
+/* LEGEND */
+#legend .color-box {
+    display: inline-block;
+    width: 20px;
+    height: 12px;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+.c1 { background: #006400; }
+.c2 { background: #7bbf6a; }
+.c3 { background: #e0c95f; }
+.border { border: 2px solid red; background: transparent; }
+
+/* MINI STATS */
+.stat-box {
+    background: #fff0fa;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+/* CHART PANEL */
+#chartPanel {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 350px;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.2);
+}
+
+/* SPINNER */
+#loading {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(255,255,255,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #ffc0df;
+    border-top-color: #ff4f95;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* CHATBOX */
+#chatbox {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 260px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.2);
+}
+
+#chatHeader {
+    background: #ff7bb1;
+    padding: 12px;
+    color: white;
+    border-radius: 12px 12px 0 0;
+    font-weight: bold;
+}

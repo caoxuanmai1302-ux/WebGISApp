@@ -28,3 +28,4 @@ D:\WebGISApp\obj\Debug\net8.0\refint\WebGISApp.dll
 D:\WebGISApp\obj\Debug\net8.0\WebGISApp.pdb
 D:\WebGISApp\obj\Debug\net8.0\WebGISApp.genruntimeconfig.cache
 D:\WebGISApp\obj\Debug\net8.0\ref\WebGISApp.dll
+d:\WebGISApp\obj\Debug\net8.0\WebGISApp.sourcelink.json
