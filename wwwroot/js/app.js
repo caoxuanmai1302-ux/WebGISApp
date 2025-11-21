@@ -1,4 +1,3 @@
-// NDVI Tile URLs (Mai cung cấp)
 const tileUrl = {
     "2019": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/d86b7abc5a0f6d627e9319737fafc41e-1353aa6d5be8825fb66bb21003e4a220/tiles/{z}/{x}/{y}",
     "2020": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/621ac58fc80c258a9d146fbdd3839e04-126f7968c1aac141a26470ac019017bb/tiles/{z}/{x}/{y}",
@@ -9,24 +8,26 @@ const tileUrl = {
     "2025": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/352d9395a9c82864f0b8dbf61a904b57-8ddf0bef60173e202a343a19f3486a9c/tiles/{z}/{x}/{y}"
 };
 
-// MAP
+
+// ===================== MAP INIT ======================
 var map = L.map("map").setView([11.0, 106.5], 11);
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
-// Layers
 let boundaryLayer = null;
 let ndviLayer = null;
 
-// Load GeoJSON
+
+// ===================== LOAD GEOJSON ======================
 fetch("data/green.json")
     .then(res => res.json())
     .then(json => initWebGIS(json));
 
-// INIT
+
+// ===================== INIT WEBGIS ======================
 function initWebGIS(data) {
+
     const years = data.features.map(f => f.properties.year);
 
-    // Fill selects
     let ySel = document.getElementById("yearSelect");
     let yA = document.getElementById("yearA");
     let yB = document.getElementById("yearB");
@@ -37,17 +38,17 @@ function initWebGIS(data) {
         yB.innerHTML += `<option>${y}</option>`;
     });
 
-    // Chart
     drawChart(data);
 
-    // Load initial
     updateYear(data, years[0]);
 
     ySel.onchange = () => updateYear(data, ySel.value);
 }
 
-// UPDATE YEAR
+
+// ===================== UPDATE YEAR ======================
 function updateYear(data, year) {
+
     let f = data.features.find(x => x.properties.year == year);
 
     // Boundary
@@ -61,13 +62,19 @@ function updateYear(data, year) {
     if (ndviLayer) map.removeLayer(ndviLayer);
     ndviLayer = L.tileLayer(tileUrl[year], { opacity: 0.65 }).addTo(map);
 
-    // Mini stats
-    document.getElementById("areaValue").textContent = f.properties.green_area_km2.toFixed(2) + " km²";
-    document.getElementById("ratioValue").textContent = (f.properties.green_ratio * 100).toFixed(1) + "%";
-    document.getElementById("monthValue").textContent = f.properties.last_data_month;
+    // Stats
+    document.getElementById("areaValue").textContent =
+        f.properties.green_area_km2.toFixed(2) + " km²";
+
+    document.getElementById("ratioValue").textContent =
+        (f.properties.green_ratio * 100).toFixed(1) + "%";
+
+    document.getElementById("monthValue").textContent =
+        f.properties.last_data_month;
 }
 
-// CHART
+
+// ===================== DRAW CHART ======================
 function drawChart(data) {
     let years = data.features.map(f => f.properties.year);
     let areas = data.features.map(f => f.properties.green_area_km2);
@@ -88,3 +95,20 @@ function drawChart(data) {
         }
     });
 }
+
+
+// ===================== SIDEBAR TOGGLE ======================
+const sidebar = document.getElementById("sidebar");
+const mapDiv = document.getElementById("map");
+
+document.getElementById("toggle-btn").onclick = () => {
+
+    if (sidebar.classList.contains("collapsed")) {
+        sidebar.classList.remove("collapsed");
+        mapDiv.style.left = "300px";
+
+    } else {
+        sidebar.classList.add("collapsed");
+        mapDiv.style.left = "0px";
+    }
+};

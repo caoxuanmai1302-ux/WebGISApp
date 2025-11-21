@@ -6,16 +6,17 @@ body {
 
 /* MAP */
 #map {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 300px;
     right: 0;
     bottom: 0;
+    transition: left 0.3s ease;
 }
 
 /* SIDEBAR */
 #sidebar {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 300px;
@@ -24,28 +25,31 @@ body {
     padding: 20px;
     overflow-y: auto;
     box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    transition: 0.3s;
-    z-index: 999;
+    transition: left 0.3s ease;
+    z-index: 2000;
 }
 
+/* Khi sidebar bị thu gọn */
+#sidebar.collapsed {
+    left: -300px;
+}
+
+/* Toggle button */
 #toggle-btn {
-    position: absolute;
-    left: 10px;
-    top: 15px;
-    padding: 10px;
-    background: #ff7bb1;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 3000; /* Quan trọng: nằm trên sidebar */
+    background: #ff4f95;
     color: white;
-    border-radius: 8px;
+    padding: 12px 14px;
+    border-radius: 10px;
     cursor: pointer;
-    z-index: 1000;
+    font-size: 20px;
 }
 
-.label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
+/* --- Chú giải NDVI CHUẨN THEO TILE CỦA MAI --- */
 
-/* LEGEND */
 .color-box {
     width: 20px;
     height: 12px;
@@ -54,9 +58,10 @@ body {
     border-radius: 4px;
 }
 
-.c1 { background: #006400; }
-.c2 { background: #7bbf6a; }
-.c3 { background: #f0d55d; }
+/* NDVI tile của Mai dùng palette xanh olive → vàng cam */
+.c1 { background: #2e6b26; }   /* NDVI cao – xanh lá đậm */
+.c2 { background: #88b04b; }   /* NDVI trung bình – xanh olive */
+.c3 { background: #f2c34d; }   /* NDVI thấp – vàng cam */
 .border { border: 2px solid red; background: transparent; }
 
 /* STATS */
@@ -69,7 +74,7 @@ body {
 
 /* CHART PANEL */
 #chartPanel {
-    position: absolute;
+    position: fixed;
     right: 20px;
     top: 20px;
     width: 350px;
@@ -104,21 +109,4 @@ body {
     to { transform: rotate(360deg); }
 }
 
-/* CHATBOX */
-#chatbox {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    width: 260px;
-    background: white;
-    border-radius: 14px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.25);
-}
 
-#chatHeader {
-    background: #ff7bb1;
-    padding: 12px;
-    color: white;
-    font-weight: bold;
-    border-radius: 14px 14px 0 0;
-}
