@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "w3dwxSiXQpyoaGyMzobEzd8rSrRYCDzKNhpBuo+oryI=",
+  "Hash": "XVQ/nA2+5rUgYZdXYUgFLTXWPUpg+y1l8T5Kl3HlFdo=",
   "Source": "WebGISApp",
   "BasePath": "_content/WebGISApp",
   "Mode": "Default",
@@ -72,6 +72,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "d:\\WebGISApp\\wwwroot\\css\\style.css",
+      "SourceId": "WebGISApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "d:\\WebGISApp\\wwwroot\\",
+      "BasePath": "_content/WebGISApp",
+      "RelativePath": "css/style.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\style.css"
     },
     {
       "Identity": "d:\\WebGISApp\\wwwroot\\data\\CuChi_Green_2019_2025.geojson",
@@ -395,6 +414,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "d:\\WebGISApp\\wwwroot\\js\\app.js",
+      "SourceId": "WebGISApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "d:\\WebGISApp\\wwwroot\\",
+      "BasePath": "_content/WebGISApp",
+      "RelativePath": "js/app.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\app.js"
     },
     {
       "Identity": "d:\\WebGISApp\\wwwroot\\js\\leaflet-geotiff\\geotiff.js",

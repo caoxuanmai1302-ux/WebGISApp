@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "d:\\WebGISApp\\wwwroot\\css\\style.css",
+      "PackagePath": "staticwebassets\\css\\style.css"
+    },
+    {
       "Id": "d:\\WebGISApp\\wwwroot\\data\\CuChi_Green_2019_2025.geojson",
       "PackagePath": "staticwebassets\\data\\CuChi_Green_2019_2025.geojson"
     },
@@ -75,6 +79,10 @@
     {
       "Id": "d:\\WebGISApp\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "d:\\WebGISApp\\wwwroot\\js\\app.js",
+      "PackagePath": "staticwebassets\\js\\app.js"
     },
     {
       "Id": "d:\\WebGISApp\\wwwroot\\js\\leaflet-geotiff\\geotiff.js",
