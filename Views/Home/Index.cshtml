@@ -4,38 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebGIS Không Gian Xanh Củ Chi</title>
-
-    <!-- CSS -->
     <link rel="stylesheet" href="~/css/style.css" />
-
-    <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
-
-    <!-- BUTTON COLLAPSE -->
     <div id="toggle-btn" title="Mở/Đóng sidebar">
         <i class="fas fa-bars"></i>
     </div>
 
-    <!-- SIDEBAR -->
-    <div id="sidebar" class="sidebar-collapsed">
+    <div id="sidebar" class="sidebar-collapsed" 
+         style="resize: horizontal; overflow:auto; min-width:220px; max-width:500px;">
         
         <h2 class="title">🌿 Không Gian Xanh Củ Chi</h2>
 
-        <!-- YEAR SELECT -->
         <label class="label">Chọn năm:</label>
         <select id="yearSelect" class="select-styled"></select>
 
-        <!-- MINI STATS -->
+        <!-- BUTTONS -->
+        <div style="margin-top: 15px;">
+            <button id="btnNdvi" class="btn-mode">
+                <i class="fa-solid fa-leaf"></i> NDVI
+            </button>
+
+            <button id="btnGreenmap" class="btn-mode">
+                <i class="fa-solid fa-tree"></i> GreenMap
+            </button>
+        </div>
+
+        <div style="margin-top:10px;">
+            <button id="btnDiff" class="btn-diff">Biến động 2019 → 2025</button>
+        </div>
+
         <div id="miniStats">
             <h3 class="sub-title">📊 Thống kê nhanh</h3>
 
@@ -52,13 +55,10 @@
             </div>
         </div>
 
-        <!-- NOTE BOX -->
         <div id="yearNote" class="note-box">
             <h3 class="sub-title">📝 Đánh giá</h3>
             <p id="noteText">Chọn năm để xem đánh giá...</p>
         </div>
-
-        <!-- LEGEND NDVI -->
         <div id="legendNDVI">
             <h3 class="sub-title">🗺️ Chú giải NDVI</h3>
             <div class="legend-item"><span class="color-box c1"></span> NDVI cao</div>
@@ -66,15 +66,6 @@
             <div class="legend-item"><span class="color-box c3"></span> NDVI thấp</div>
         </div>
 
-        <!-- LEGEND GREENMAP -->
-        <div id="legendGREEN" style="display:none;">
-            <h3 class="sub-title">🗺️ Chú giải GreenMap</h3>
-            <div class="legend-item"><span class="color-box c1"></span> Mảng xanh lớn</div>
-            <div class="legend-item"><span class="color-box c2"></span> Phân tán</div>
-            <div class="legend-item"><span class="color-box c3"></span> Ít/thưa</div>
-        </div>
-
-        <!-- LEGEND DIFF -->
         <div id="legendDiff" style="display:none;">
             <h3 class="sub-title">🌈 Chú giải biến động</h3>
             <div class="legend-item"><span class="color-box diff1"></span> Giảm mạnh</div>
@@ -84,7 +75,6 @@
             <div class="legend-item"><span class="color-box diff5"></span> Tăng mạnh</div>
         </div>
 
-        <!-- COMPARE -->
         <div id="compare">
             <h3 class="sub-title">🔍 So sánh 2 năm</h3>
 
@@ -93,33 +83,37 @@
                 <select id="yearB" class="select-styled"></select>
             </div>
 
-            <button id="compareBtn" class="btn-main"><i class="fa-solid fa-layer-group"></i> So sánh</button>
-            <button id="btnDiff" class="btn-diff">Biến động 2019 → 2025</button>
-            <button id="btnGreen" class="btn-green">GreenMap</button>
+            <button id="compareBtn" class="btn-main">
+                <i class="fa-solid fa-layer-group"></i> So sánh
+            </button>
+
+            <div id="opacityCompare" style="display:none; margin-top:15px;">
+                <label>Kéo để so sánh:</label>
+                <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="0.5">
+            </div>
         </div>
 
     </div>
 
-    <!-- MAP -->
     <div id="map"></div>
 
-    <!-- CHART PANEL -->
+
     <div id="chartPanel" class="chart-collapsed">
-        <button id="chartToggle" class="chart-toggle-btn"><i class="fas fa-chart-line"></i></button>
+        <button id="chartToggle" class="chart-toggle-btn">
+            <i class="fas fa-chart-line"></i>
+        </button>
+
         <div class="chart-content">
             <h3>Diện tích xanh theo năm</h3>
             <canvas id="chart"></canvas>
         </div>
     </div>
 
-    <!-- LOADING -->
     <div id="loading">
         <div class="spinner"></div>
     </div>
 
-    <!-- JS -->
     <script src="~/js/app.js"></script>
-    <script src="https://unpkg.com/leaflet-side-by-side@2.0.1/dist/leaflet-side-by-side.min.js"></script>
 
 </body>
 </html>

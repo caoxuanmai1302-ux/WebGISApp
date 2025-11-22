@@ -23,15 +23,18 @@ const tileUrlDiff = {
     "2019_2025": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/d2abb456448e8218c2c6683740676e05-51b59dd526d0906c031733a4bd88fad4/tiles/{z}/{x}/{y}"
 };
 
-// ================== MAP INIT ==================
+// ================== MODE ==================
+let currentMode = "ndvi";
+
+// ================== MAP ==================
 var map = L.map("map").setView([11.0, 106.5], 11);
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
-let ndviLayer = null;
+let activeLayer = null;
 let compareLayerA = null;
 let compareLayerB = null;
-let sideBySideControl = null;
 
+// ================== LOAD DATA ==================
 fetch("/data/green.json")
     .then(res => res.json())
     .then(json => init(json));
@@ -52,43 +55,76 @@ function init(data) {
 
     drawChart(data);
 
-    select.onchange = () => updateYear(data, select.value);
+    select.onchange = () => updateLayer(data, select.value);
 
-    updateYear(data, years[0]); // Load mặc định
+    updateLayer(data, years[0]); 
 }
 
-// ================== UPDATE NDVI ==================
-function updateYear(data, year) {
+// ================== UPDATE MAP ==================
+function updateLayer(data, year) {
     let f = data.features.find(x => x.properties.year == year);
 
-    hideLegends();
-    document.getElementById("legendNDVI").style.display = "block";
-
-    if (sideBySideControl) map.removeControl(sideBySideControl);
+    if (activeLayer) map.removeLayer(activeLayer);
     if (compareLayerA) map.removeLayer(compareLayerA);
     if (compareLayerB) map.removeLayer(compareLayerB);
 
-    if (ndviLayer) map.removeLayer(ndviLayer);
-    ndviLayer = L.tileLayer(tileUrl[year], { opacity: 1.0 }).addTo(map);
+    hideLegends();
+    document.getElementById("opacityCompare").style.display = "none";
+
+    if (currentMode === "ndvi") {
+        activeLayer = L.tileLayer(tileUrl[year], { opacity: 1 }).addTo(map);
+        document.getElementById("legendNDVI").style.display = "block";
+    }
+    else if (currentMode === "green") {
+        activeLayer = L.tileLayer(tileUrlGreen[year], { opacity: 1 }).addTo(map);
+    }
+    else if (currentMode === "diff") {
+        activeLayer = L.tileLayer(tileUrlDiff["2019_2025"], { opacity: 1 }).addTo(map);
+        updateNote("diff");
+        document.getElementById("legendDiff").style.display = "block";
+        return;
+    }
 
     document.getElementById("areaValue").textContent = f.properties.green_area_km2.toFixed(2) + " km²";
     document.getElementById("ratioValue").textContent = (f.properties.green_ratio * 100).toFixed(1) + "%";
     updateNote(year);
 }
 
-// ================== YEAR NOTES ==================
-const notes = {
-    2019: "2019: độ xanh ổn định.",
-    2020: "2020: Covid → xanh tăng.",
-    2021: "2021: xanh cao nhất.",
-    2022: "2022: giảm nhẹ.",
-    2023: "2023: tăng đều.",
-    2024: "2024: ít biến động.",
-    2025: "2025: xanh tăng mạnh."
+// ================== NOTES ==================
+const ndviNotes = {
+    2019: "Năm 2019, NDVI duy trì mức trung bình–khá. Thảm thực vật ổn định, phân bố đều tại các khu vực nông nghiệp và sinh thái truyền thống.",
+    2020: "Năm 2020 có NDVI thấp nhất do thời tiết khô hạn đầu năm và biến động mùa vụ. Đại dịch Covid cũng khiến canh tác bị gián đoạn.",
+    2021: "NDVI phục hồi mạnh trong 2021 nhờ giãn cách xã hội làm giảm áp lực môi trường, cây trồng phục hồi tốt hơn.",
+    2022: "2022 là năm xanh nhất, điều kiện khí hậu thuận lợi giúp NDVI đạt mức cao nhất trong toàn bộ chuỗi dữ liệu.",
+    2023: "NDVI giảm nhẹ trong 2023 do mở rộng đô thị – công nghiệp, nhưng tổng thể vẫn ổn định.",
+    2024: "Năm 2024 NDVI giảm nhẹ, một phần do xây dựng hạ tầng và biến động thời tiết theo mùa.",
+    2025: "NDVI tăng trở lại vào 2025, nhiều vùng xanh phục hồi rõ rệt nhờ các chương trình trồng cây và cải tạo đất."
 };
 
+const greenNotes = {
+    2019: "Mảng xanh 2019 liên tục, ít phân mảnh, đặc biệt mạnh ở các vùng nông nghiệp truyền thống.",
+    2020: "GreenMap 2020 tăng nhẹ nhờ hoạt động sản xuất giảm trong đại dịch, giúp các vùng xanh liền mạch hơn.",
+    2021: "Mảng xanh 2021 đạt độ phủ cao nhất, liên tục và rộng, thể hiện sự phục hồi mạnh của thảm thực vật.",
+    2022: "Một số khu bị phân mảnh do phát triển hạ tầng nhưng tổng thể xanh vẫn lớn và ổn định.",
+    2023: "Xanh giảm nhẹ, xuất hiện các điểm phân mảnh do các dự án dân cư – công nghiệp.",
+    2024: "Năm 2024 duy trì mức xanh trung bình, mảng xanh hơi chia cắt nhưng không nghiêm trọng.",
+    2025: "Mảng xanh 2025 phục hồi mạnh, nhiều khu vực liên tục trở lại nhờ trồng cây và cải tạo kênh rạch."
+};
+
+const diffNotes = {
+    "diff": "Giai đoạn 2019–2025 ghi nhận sự thay đổi rõ rệt: 2019 có nền xanh ổn định, đến 2025 mức xanh tăng mạnh trở lại nhờ phục hồi tự nhiên và trồng cây."
+};
+
+// ================== UPDATE NOTES ==================
 function updateNote(year) {
-    document.getElementById("noteText").textContent = notes[year];
+    let text = "";
+
+    if (currentMode === "ndvi") text = ndviNotes[year];
+    else if (currentMode === "green") text = greenNotes[year];
+    else if (currentMode === "diff") text = diffNotes["diff"];
+    else text = "Đang so sánh — không có đánh giá.";
+
+    document.getElementById("noteText").textContent = text;
 }
 
 // ================== CHART ==================
@@ -113,57 +149,62 @@ function drawChart(data) {
     });
 }
 
-// ================== GREENMAP ==================
-document.getElementById("btnGreen").onclick = () => {
-    let y = document.getElementById("yearSelect").value;
-
-    hideLegends();
-    document.getElementById("legendGREEN").style.display = "block";
-
-    if (sideBySideControl) map.removeControl(sideBySideControl);
-    if (compareLayerA) map.removeLayer(compareLayerA);
-    if (compareLayerB) map.removeLayer(compareLayerB);
-
-    if (ndviLayer) map.removeLayer(ndviLayer);
-    ndviLayer = L.tileLayer(tileUrlGreen[y], { opacity: 1.0 }).addTo(map);
+// ================== BUTTONS ==================
+document.getElementById("btnNdvi").onclick = () => {
+    currentMode = "ndvi";
+    updateLayerFromUI();
 };
 
-// ================== DIFF ==================
+document.getElementById("btnGreenmap").onclick = () => {
+    currentMode = "green";
+    updateLayerFromUI();
+};
+
 document.getElementById("btnDiff").onclick = () => {
-    hideLegends();
-    document.getElementById("legendDiff").style.display = "block";
-
-    if (sideBySideControl) map.removeControl(sideBySideControl);
-    if (compareLayerA) map.removeLayer(compareLayerA);
-    if (compareLayerB) map.removeLayer(compareLayerB);
-
-    if (ndviLayer) map.removeLayer(ndviLayer);
-    ndviLayer = L.tileLayer(tileUrlDiff["2019_2025"], { opacity: 1.0 }).addTo(map);
+    currentMode = "diff";
+    updateLayerFromUI();
 };
 
-// ================== COMPARE ==================
+// ================== COMPARE (opacity slider) ==================
 document.getElementById("compareBtn").onclick = () => {
     let a = document.getElementById("yearA").value;
     let b = document.getElementById("yearB").value;
 
     if (a === b) return alert("Hãy chọn 2 năm khác nhau!");
 
+    currentMode = "compare";
     hideLegends();
 
-    if (ndviLayer) map.removeLayer(ndviLayer);
-    if (sideBySideControl) map.removeControl(sideBySideControl);
+    if (activeLayer) map.removeLayer(activeLayer);
+    if (compareLayerA) map.removeLayer(compareLayerA);
+    if (compareLayerB) map.removeLayer(compareLayerB);
 
-    compareLayerA = L.tileLayer(tileUrl[a], { opacity: 1.0 });
-    compareLayerB = L.tileLayer(tileUrl[b], { opacity: 1.0 });
+    compareLayerA = L.tileLayer(tileUrl[a], { opacity: 1 }).addTo(map);
+    compareLayerB = L.tileLayer(tileUrl[b], { opacity: 0.5 }).addTo(map);
 
-    sideBySideControl = L.control.sideBySide(compareLayerA, compareLayerB).addTo(map);
+    document.getElementById("opacityCompare").style.display = "block";
+
+    document.getElementById("opacitySlider").oninput = (e) => {
+        compareLayerB.setOpacity(e.target.value);
+    };
+
+    document.getElementById("noteText").textContent = "Đang so sánh hai năm — không hiển thị đánh giá.";
 };
 
-// ================== HIDE LEGENDS ==================
+// ================== HELPERS ==================
+function updateLayerFromUI() {
+    const y = document.getElementById("yearSelect").value;
+    fetch("/data/green.json")
+        .then(r => r.json())
+        .then(d => updateLayer(d, y));
+}
+
 function hideLegends() {
-    document.getElementById("legendNDVI").style.display = "none";
-    document.getElementById("legendGREEN").style.display = "none";
-    document.getElementById("legendDiff").style.display = "none";
+    const ndvi = document.getElementById("legendNDVI");
+    const diff = document.getElementById("legendDiff");
+
+    if (ndvi) ndvi.style.display = "none";
+    if (diff) diff.style.display = "none";
 }
 
 // ================== UI ==================

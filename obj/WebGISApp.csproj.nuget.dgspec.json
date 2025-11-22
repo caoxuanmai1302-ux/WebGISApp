@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\WebGISApp\\WebGISApp.csproj": {}
+    "d:\\WebGISApp\\WebGISApp.csproj": {}
   },
   "projects": {
-    "D:\\WebGISApp\\WebGISApp.csproj": {
+    "d:\\WebGISApp\\WebGISApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\WebGISApp\\WebGISApp.csproj",
+        "projectUniqueName": "d:\\WebGISApp\\WebGISApp.csproj",
         "projectName": "WebGISApp",
-        "projectPath": "D:\\WebGISApp\\WebGISApp.csproj",
+        "projectPath": "d:\\WebGISApp\\WebGISApp.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\WebGISApp\\obj\\",
+        "outputPath": "d:\\WebGISApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

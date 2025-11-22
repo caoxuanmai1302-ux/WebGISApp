@@ -1,254 +1,288 @@
+/* ========================
+   GLOBAL
+======================== */
 body {
     margin: 0;
     font-family: "Segoe UI", sans-serif;
     background: linear-gradient(135deg, #ffeaf3 0%, #fff 100%);
-    overflow-x: hidden; /* Tránh scroll ngang */
+    overflow: hidden;
 }
 
-/* MAP */
-#map {
-    position: absolute;
-    top: 0;
-    left: 0; /* Thay 300px thành 0, vì sidebar hiện ban đầu */
-    right: 0;
-    bottom: 0;
-    transition: left 0.3s ease; /* Animation cho sidebar */
-}
-
-/* SIDEBAR */
+/* ========================
+   SIDEBAR
+======================== */
 #sidebar {
     position: absolute;
     top: 0;
     left: 0;
+
     width: 300px;
-    bottom: 0;
-    background: linear-gradient(180deg, #fff 0%, #ffe0ec 100%);
+    min-width: 220px;
+    max-width: 500px;
+
+    height: 100vh;
     padding: 22px;
-    overflow-y: auto;
-    box-shadow: 3px 0 15px rgba(255, 79, 149, 0.2);
-    transition: left 0.3s ease; /* Thay transform thành left để khớp JS */
+    background: linear-gradient(180deg, #fff 0%, #ffe0ec 100%);
+
+    resize: horizontal;
+    overflow: auto;
+
+    box-shadow: 3px 0 15px rgba(255, 79, 149, 0.25);
+    transition: left 0.25s ease, width 0.1s;
+
     z-index: 1000;
 }
 
 #sidebar.sidebar-collapsed {
-    left: -300px; /* Ẩn sidebar bằng left, không transform */
+    left: -320px !important;
 }
 
-.title {
-    font-size: 22px;
-    color: #ff4f95;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+/* ========================
+   MAP
+======================== */
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 300px;
+    transition: left 0.25s ease;
 }
 
-.label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
+#sidebar.sidebar-collapsed ~ #map {
+    left: 0 !important;
 }
 
-.sub-title {
-    color: #ff4f95;
-    margin-top: 15px;
-    margin-bottom: 10px;
-    font-size: 16px;
-}
-
-/* BUTTON TOGGLE */
+/* ========================
+   TOGGLE BUTTON
+======================== */
 #toggle-btn {
     position: fixed;
     top: 20px;
     left: 20px;
-    z-index: 2000;
+    z-index: 2001;
+
     background: linear-gradient(45deg, #ff4f95, #ffbcd6);
     color: white;
+
     padding: 12px 14px;
     border-radius: 50%;
     cursor: pointer;
     font-size: 18px;
-    box-shadow: 0 4px 8px rgba(255, 79, 149, 0.3);
-    transition: all 0.3s ease;
-}
 
+    box-shadow: 0 4px 10px rgba(255, 79, 149, 0.35);
+    transition: 0.25s;
+}
 #toggle-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 12px rgba(255, 79, 149, 0.4);
 }
 
-/* SELECT STYLING */
+/* ========================
+   SELECT
+======================== */
 .select-styled {
     width: 100%;
     padding: 10px;
     border: 2px solid #ffe0ec;
     border-radius: 8px;
-    background: #fff;
-    font-size: 14px;
-    transition: border-color 0.3s ease;
+    background: white;
+    margin-top: 5px;
 }
 
-.select-styled:focus {
-    border-color: #ff4f95;
-    outline: none;
+/* ========================
+   NDVI & GREENMAP – 2 NÚT NGANG
+======================== */
+.mode-row {
+    display: flex;
+    width: 100%;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 20px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
-/* STAT */
+.btn-mode {
+    flex: 1;
+    padding: 14px;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+/* NDVI */
+#btnNdvi {
+    background: linear-gradient(45deg,#00b894,#00cec9);
+}
+#btnNdvi:hover {
+    background: linear-gradient(45deg,#00cec9,#009b9b);
+}
+
+/* GREENMAP */
+#btnGreenmap {
+    background: linear-gradient(45deg,#2ecc71,#27ae60);
+}
+#btnGreenmap:hover {
+    background: linear-gradient(45deg,#27ae60,#1e8449);
+}
+
+/* ========================
+   BIẾN ĐỘNG
+======================== */
+.btn-diff {
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+
+    background: linear-gradient(45deg,#6f2da8,#9c27b0);
+    border-radius: 14px;
+
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+
+    border: none;
+    transition: 0.25s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.13);
+}
+.btn-diff:hover {
+    transform: translateY(-3px);
+}
+
+/* ========================
+   SO SÁNH – STYLE CŨ
+======================== */
+.btn-main {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    margin-top: 10px;
+
+    background: linear-gradient(45deg, #ff4f95, #e91e63);
+    color: white;
+    border: none;
+
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.13);
+}
+.btn-main:hover {
+    transform: translateY(-3px);
+}
+
+/* ========================
+   STAT + NOTE
+======================== */
 .stat-grid {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
     gap: 12px;
+    margin-top: 15px;
 }
-
 .stat-box {
-    background: linear-gradient(135deg, #ffe0ec 0%, #ffbcd6 100%);
+    background: linear-gradient(135deg,#ffe0ec,#ffbcd6);
     padding: 15px;
     border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease;
 }
 
-.stat-box:hover {
-    transform: translateY(-2px);
-}
-
-.stat-box h2 {
-    margin: 0;
-    color: #ff4f95;
-    font-size: 18px;
-}
-
-/* NOTE */
 .note-box {
-    background: linear-gradient(135deg, #fff3fa 0%, #ffeaf3 100%);
+    background: linear-gradient(135deg,#fff3fa,#ffeaf3);
     padding: 15px;
     border-radius: 12px;
     margin-top: 15px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* LEGEND */
+/* ========================
+   LEGENDS
+======================== */
 .legend-item {
-    margin-bottom: 8px;
     display: flex;
-    align-items: center;
+    margin-bottom: 8px;
 }
-/* NDVI legend */
-.c1 { background: #006400; }
-.c2 { background: #6abf69; }
-.c3 { background: #ffde59; }
-
-/* Diff legend */
-.diff1 { background: #a50026; }
-.diff2 { background: #f46d43; }
-.diff3 { background: #fee08b; }
-.diff4 { background: #66bd63; }
-.diff5 { background: #006837; }
-
 .color-box {
     width: 24px;
     height: 14px;
-    display: inline-block;
     border-radius: 4px;
     margin-right: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
-/* COMPARE */
-.compare-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-}
+.c1 { background:#006400; }
+.c2 { background:#fee08b; }
+.c3 { background:#a50026; }
 
-.btn-main, .btn-diff, .btn-green {
-    width: 100%;
-    padding: 12px;
-    border-radius: 12px;
-    margin-top: 10px;
-    cursor: pointer;
-    border: none;
-    font-size: 14px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
+.diff1 { background:#a50026; }
+.diff2 { background:#f46d43; }
+.diff3 { background:#fee08b; }
+.diff4 { background:#66bd63; }
+.diff5 { background:#006837; }
 
-.btn-main {
-    background: linear-gradient(45deg, #ff4f95, #e91e63);
-    color: white;
-}
-
-.btn-main:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(255, 79, 149, 0.3);
-}
-
-.btn-diff {
-    background: linear-gradient(45deg, #6f2da8, #9c27b0);
-    color: white;
-}
-
-.btn-diff:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(111, 45, 168, 0.3);
-}
-
-.btn-green {
-    background: linear-gradient(45deg, #2ecc71, #27ae60);
-    color: white;
-}
-
-.btn-green:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(46, 204, 113, 0.3);
-    background: linear-gradient(45deg, #27ae60, #1e8449); /* Màu tối hơn khi hover để nổi bật */
-}
-
-/* CHART PANEL */
+/* ========================
+   CHART PANEL (FIX ICON)
+======================== */
 #chartPanel {
     position: absolute;
     right: 20px;
     top: 20px;
     width: 350px;
-    background: linear-gradient(135deg, #fff 0%, #ffeaf3 100%);
+
+    background: linear-gradient(135deg,#fff,#ffeaf3);
     padding: 15px;
     border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    z-index: 900;
-    transition: all 0.3s ease;
-}
 
-#chartPanel.chart-collapsed .chart-content {
-    display: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    transition: .25s;
+    z-index: 1500;
 }
 
 #chartPanel.chart-collapsed {
     width: 60px;
     height: 60px;
     padding: 0;
+
     border-radius: 50%;
     overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+#chartPanel.chart-collapsed .chart-content {
+    display: none;
+}
+
+/* NÚT ICON KHÔNG BAO GIỜ LỆCH */
 .chart-toggle-btn {
     background: #ff4f95;
     color: white;
+
     border: none;
-    padding: 10px;
+    width: 48px;
+    height: 48px;
+
     border-radius: 50%;
     cursor: pointer;
-    font-size: 16px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    transition: all 0.3s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+    transition: 0.25s;
+
+    position: relative;
 }
 
 .chart-toggle-btn:hover {
     background: #e91e63;
 }
 
-/* RESPONSIVE */
+/* ========================
+   RESPONSIVE
+======================== */
 @media (max-width: 768px) {
     #sidebar {
         width: 250px;
@@ -256,23 +290,15 @@ body {
     #map {
         left: 250px;
     }
-    #chartPanel {
-        width: 280px;
-        right: 10px;
-        top: 10px;
-    }
-    #toggle-btn {
-        left: 10px;
-    }
 }
 
 @media (max-width: 480px) {
     #sidebar {
         width: 100%;
-        left: -100%; /* Ẩn full-width trên mobile */
+        left: -100%;
     }
     #sidebar:not(.sidebar-collapsed) {
-        left: 0; /* Hiển thị khi mở */
+        left: 0;
     }
     #map {
         left: 0;
@@ -280,7 +306,5 @@ body {
     #chartPanel {
         width: 90%;
         left: 5%;
-        right: auto;
-        top: 10px;
     }
 }
