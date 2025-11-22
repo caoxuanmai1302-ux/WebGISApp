@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebGIS Không Gian Xanh Củ Chi</title>
 
+    <!-- CSS -->
     <link rel="stylesheet" href="~/css/style.css" />
 
     <!-- Leaflet -->
@@ -20,51 +21,61 @@
 
 <body>
 
-    <!-- COLLAPSE BUTTON -->
-    <div id="toggle-btn"><i class="fas fa-bars"></i></div>
+    <!-- BUTTON COLLAPSE -->
+    <div id="toggle-btn" title="Mở/Đóng sidebar">
+        <i class="fas fa-bars"></i>
+    </div>
 
     <!-- SIDEBAR -->
-    <div id="sidebar">
-        <h2>🌿 Không Gian Xanh Củ Chi</h2>
+    <div id="sidebar" class="sidebar-collapsed">
+        
+        <h2 class="title">🌿 Không Gian Xanh Củ Chi</h2>
 
+        <!-- YEAR SELECT -->
         <label class="label">Chọn năm:</label>
-        <select id="yearSelect"></select>
+        <select id="yearSelect" class="select-styled"></select>
 
+        <!-- MINI STATS -->
         <div id="miniStats">
-            <h3>📊 Thống kê nhanh</h3>
+            <h3 class="sub-title">📊 Thống kê nhanh</h3>
 
-            <div class="stat-box">
-                <p>Diện tích xanh:</p>
-                <h2 id="areaValue">-- km²</h2>
-            </div>
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <p>Diện tích xanh</p>
+                    <h2 id="areaValue">-- km²</h2>
+                </div>
 
-            <div class="stat-box">
-                <p>Tỷ lệ xanh:</p>
-                <h2 id="ratioValue">-- %</h2>
-            </div>
+                <div class="stat-box">
+                    <p>Tỷ lệ xanh</p>
+                    <h2 id="ratioValue">-- %</h2>
+                </div>
 
-            <div class="stat-box">
-                <p>Dữ liệu gần nhất:</p>
-                <h2 id="monthValue">--</h2>
+                <div class="stat-box">
+                    <p>Dữ liệu gần nhất</p>
+                    <h2 id="monthValue">--</h2>
+                </div>
             </div>
+        </div>
+
+        <!-- NOTE BOX -->
+        <div id="yearNote" class="note-box">
+            <h3 class="sub-title">📝 Đánh giá</h3>
+            <p id="noteText">Chọn năm để xem đánh giá...</p>
         </div>
 
         <!-- LEGEND -->
         <div id="legend">
-            <h3>🗺️ Chú giải</h3>
+            <h3 class="sub-title">🗺️ Chú giải</h3>
 
             <div class="legend-item">
                 <span class="color-box c1"></span> NDVI cao
             </div>
-
             <div class="legend-item">
                 <span class="color-box c2"></span> NDVI trung bình
             </div>
-
             <div class="legend-item">
                 <span class="color-box c3"></span> NDVI thấp
             </div>
-
             <div class="legend-item">
                 <span class="color-box border"></span> Ranh giới Củ Chi
             </div>
@@ -72,20 +83,40 @@
 
         <!-- COMPARE -->
         <div id="compare">
-            <h3>🔍 So sánh 2 năm</h3>
-            <select id="yearA"></select>
-            <select id="yearB"></select>
-            <button id="compareBtn">So sánh</button>
+            <h3 class="sub-title">🔍 So sánh 2 năm</h3>
+
+            <div class="compare-grid">
+                <select id="yearA" class="select-styled"></select>
+                <select id="yearB" class="select-styled"></select>
+            </div>
+
+            <button id="compareBtn" class="btn-main" title="So sánh hai năm">
+                <i class="fa-solid fa-layer-group"></i> So sánh
+            </button>
+
+            <button id="btnDiff" class="btn-diff" title="Xem biến động 2019-2025">
+                🌈 Biến động 2019 → 2025
+            </button>
+
+            <button id="btnGreen" class="btn-green" title="Xem không gian xanh">
+                🌱 Không gian xanh
+            </button>
         </div>
+
     </div>
 
     <!-- MAP -->
     <div id="map"></div>
 
-    <!-- CHART -->
-    <div id="chartPanel">
-        <h3>📈 Diện tích xanh theo năm</h3>
-        <canvas id="chart"></canvas>
+    <!-- CHART PANEL (Collapsible) -->
+    <div id="chartPanel" class="chart-collapsed">
+        <button id="chartToggle" class="chart-toggle-btn" title="Thu gọn/Mở rộng biểu đồ">
+            <i class="fas fa-chart-line"></i>
+        </button>
+        <div class="chart-content">
+            <h3>Diện tích xanh theo năm</h3>
+            <canvas id="chart"></canvas>
+        </div>
     </div>
 
     <!-- LOADING -->
@@ -93,9 +124,8 @@
         <div class="spinner"></div>
     </div>
 
-    
+    <!-- APP JS -->
+    <script src="~/js/app.js"></script>
 
-   <script src="~/js/app.js"></script>
 </body>
 </html>
-

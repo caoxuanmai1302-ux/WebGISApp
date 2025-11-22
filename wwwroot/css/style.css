@@ -1,88 +1,250 @@
 body {
     margin: 0;
     font-family: "Segoe UI", sans-serif;
-    background: #ffedf4;
+    background: linear-gradient(135deg, #ffeaf3 0%, #fff 100%);
+    overflow-x: hidden; /* Tránh scroll ngang */
 }
 
 /* MAP */
 #map {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 300px;
     right: 0;
     bottom: 0;
-    transition: left 0.3s ease;
+    transition: left 0.3s ease; /* Animation cho sidebar */
 }
 
 /* SIDEBAR */
 #sidebar {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 300px;
     bottom: 0;
-    background: white;
-    padding: 20px;
+    background: linear-gradient(180deg, #fff 0%, #ffe0ec 100%);
+    padding: 22px;
     overflow-y: auto;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    transition: left 0.3s ease;
-    z-index: 2000;
+    box-shadow: 3px 0 15px rgba(255, 79, 149, 0.2);
+    transition: transform 0.3s ease, width 0.3s ease;
+    z-index: 1000;
 }
 
-/* Khi sidebar bị thu gọn */
-#sidebar.collapsed {
-    left: -300px;
+#sidebar.sidebar-collapsed {
+    transform: translateX(-100%);
 }
 
-/* Toggle button */
+.title {
+    font-size: 22px;
+    color: #ff4f95;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.sub-title {
+    color: #ff4f95;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* BUTTON TOGGLE */
 #toggle-btn {
     position: fixed;
     top: 20px;
     left: 20px;
-    z-index: 3000; /* Quan trọng: nằm trên sidebar */
-    background: #ff4f95;
+    z-index: 2000;
+    background: linear-gradient(45deg, #ff4f95, #ffbcd6);
     color: white;
     padding: 12px 14px;
-    border-radius: 10px;
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 18px;
+    box-shadow: 0 4px 8px rgba(255, 79, 149, 0.3);
+    transition: all 0.3s ease;
 }
 
-/* --- Chú giải NDVI CHUẨN THEO TILE CỦA MAI --- */
+#toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(255, 79, 149, 0.4);
+}
+
+/* SELECT STYLING */
+.select-styled {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ffe0ec;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.select-styled:focus {
+    border-color: #ff4f95;
+    outline: none;
+}
+
+/* STAT */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 12px;
+}
+
+.stat-box {
+    background: linear-gradient(135deg, #ffe0ec 0%, #ffbcd6 100%);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.stat-box:hover {
+    transform: translateY(-2px);
+}
+
+.stat-box h2 {
+    margin: 0;
+    color: #ff4f95;
+    font-size: 18px;
+}
+
+/* NOTE */
+.note-box {
+    background: linear-gradient(135deg, #fff3fa 0%, #ffeaf3 100%);
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* LEGEND */
+.legend-item {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+/* NDVI legend */
+.c1 { background: #006400; }
+.c2 { background: #6abf69; }
+.c3 { background: #ffde59; }
+
+/* Diff legend */
+.diff1 { background: #a50026; }
+.diff2 { background: #f46d43; }
+.diff3 { background: #fee08b; }
+.diff4 { background: #66bd63; }
+.diff5 { background: #006837; }
 
 .color-box {
-    width: 20px;
-    height: 12px;
+    width: 24px;
+    height: 14px;
     display: inline-block;
-    margin-right: 10px;
     border-radius: 4px;
+    margin-right: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
-/* NDVI tile của Mai dùng palette xanh olive → vàng cam */
-.c1 { background: #2e6b26; }   /* NDVI cao – xanh lá đậm */
-.c2 { background: #88b04b; }   /* NDVI trung bình – xanh olive */
-.c3 { background: #f2c34d; }   /* NDVI thấp – vàng cam */
-.border { border: 2px solid red; background: transparent; }
+/* COMPARE */
+.compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
 
-/* STATS */
-.stat-box {
-    background: #ffe3ef;
+.btn-main, .btn-diff, .btn-green {
+    width: 100%;
     padding: 12px;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    border-radius: 12px;
+    margin-top: 10px;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn-main {
+    background: linear-gradient(45deg, #ff4f95, #e91e63);
+    color: white;
+}
+
+.btn-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 79, 149, 0.3);
+}
+
+.btn-diff {
+    background: linear-gradient(45deg, #6f2da8, #9c27b0);
+    color: white;
+}
+
+.btn-diff:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(111, 45, 168, 0.3);
+}
+
+.btn-green {
+    background: linear-gradient(45deg, #2ecc71, #27ae60);
+    color: white;
+}
+
+.btn-green:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(46, 204, 113, 0.3);
 }
 
 /* CHART PANEL */
 #chartPanel {
-    position: fixed;
+    position: absolute;
     right: 20px;
     top: 20px;
     width: 350px;
-    background: white;
+    background: linear-gradient(135deg, #fff 0%, #ffeaf3 100%);
     padding: 15px;
-    border-radius: 14px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     z-index: 900;
+    transition: all 0.3s ease;
+}
+
+#chartPanel.chart-collapsed .chart-content {
+    display: none;
+}
+
+#chartPanel.chart-collapsed {
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.chart-toggle-btn {
+    background: #ff4f95;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    transition: all 0.3s ease;
+}
+
+.chart-toggle-btn:hover {
+    background: #e91e63;
 }
 
 /* LOADING */
@@ -90,10 +252,11 @@ body {
     display: none;
     position: fixed;
     top:0; left:0; right:0; bottom:0;
-    background: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.8);
     align-items: center;
     justify-content: center;
     z-index: 2000;
+    backdrop-filter: blur(5px); /* Hiệu ứng blur */
 }
 
 .spinner {
@@ -109,4 +272,39 @@ body {
     to { transform: rotate(360deg); }
 }
 
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    #sidebar {
+        width: 250px;
+    }
+    #map {
+        left: 250px;
+    }
+    #chartPanel {
+        width: 280px;
+        right: 10px;
+        top: 10px;
+    }
+    #toggle-btn {
+        left: 10px;
+    }
+}
 
+@media (max-width: 480px) {
+    #sidebar {
+        width: 100%;
+        transform: translateX(-100%);
+    }
+    #sidebar:not(.sidebar-collapsed) {
+        transform: translateX(0);
+    }
+    #map {
+        left: 0;
+    }
+    #chartPanel {
+        width: 90%;
+        left: 5%;
+        right: auto;
+        top: 10px;
+    }
+}
