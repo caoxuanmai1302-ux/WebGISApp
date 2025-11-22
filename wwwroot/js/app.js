@@ -1,3 +1,4 @@
+// ================== TILE URLS ==================
 const tileUrl = {
     "2019": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/d86b7abc5a0f6d627e9319737fafc41e-1353aa6d5be8825fb66bb21003e4a220/tiles/{z}/{x}/{y}",
     "2020": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/621ac58fc80c258a9d146fbdd3839e04-126f7968c1aac141a26470ac019017bb/tiles/{z}/{x}/{y}",
@@ -26,8 +27,10 @@ const tileUrlDiff = {
 var map = L.map("map").setView([11.0, 106.5], 11);
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
-let boundaryLayer = null;  
 let ndviLayer = null;
+let compareLayerA = null;
+let compareLayerB = null;
+let sideBySideControl = null;
 
 fetch("/data/green.json")
     .then(res => res.json())
@@ -50,35 +53,38 @@ function init(data) {
     drawChart(data);
 
     select.onchange = () => updateYear(data, select.value);
-    yearA.onchange = () => {};
-    yearB.onchange = () => {};
 
-    updateYear(data, years[0]);
+    updateYear(data, years[0]); // Load mặc định
 }
 
+// ================== UPDATE NDVI ==================
 function updateYear(data, year) {
-    showLoading(); 
     let f = data.features.find(x => x.properties.year == year);
 
+    hideLegends();
+    document.getElementById("legendNDVI").style.display = "block";
+
+    if (sideBySideControl) map.removeControl(sideBySideControl);
+    if (compareLayerA) map.removeLayer(compareLayerA);
+    if (compareLayerB) map.removeLayer(compareLayerB);
+
     if (ndviLayer) map.removeLayer(ndviLayer);
-    ndviLayer = L.tileLayer(tileUrl[year], { opacity: 1.0 }).addTo(map);  
+    ndviLayer = L.tileLayer(tileUrl[year], { opacity: 1.0 }).addTo(map);
+
     document.getElementById("areaValue").textContent = f.properties.green_area_km2.toFixed(2) + " km²";
     document.getElementById("ratioValue").textContent = (f.properties.green_ratio * 100).toFixed(1) + "%";
-    document.getElementById("monthValue").textContent = f.properties.last_data_month;
-
     updateNote(year);
-    setTimeout(hideLoading, 500); 
 }
 
 // ================== YEAR NOTES ==================
 const notes = {
-    2019: "Năm 2019: độ xanh ổn định, chưa có biến động mạnh.",
-    2020: "Năm 2020: ảnh hưởng Covid làm giảm hoạt động công nghiệp → xanh nhỉnh hơn.",
-    2021: "Năm 2021: tỷ lệ xanh tăng mạnh nhất giai đoạn giãn cách.",
-    2022: "Năm 2022: công nghiệp hoạt động lại, xanh giảm nhẹ.",
-    2023: "Năm 2023: xu hướng xanh tăng lại, ổn định.",
-    2024: "Năm 2024: biến động ít, duy trì mức xanh khá.",
-    2025: "Năm 2025: xanh tăng đáng kể, dữ liệu cập nhật tháng mới."
+    2019: "2019: độ xanh ổn định.",
+    2020: "2020: Covid → xanh tăng.",
+    2021: "2021: xanh cao nhất.",
+    2022: "2022: giảm nhẹ.",
+    2023: "2023: tăng đều.",
+    2024: "2024: ít biến động.",
+    2025: "2025: xanh tăng mạnh."
 };
 
 function updateNote(year) {
@@ -107,60 +113,68 @@ function drawChart(data) {
     });
 }
 
-// ================== BUTTON LOGIC ==================
-
-// Không gian xanh
+// ================== GREENMAP ==================
 document.getElementById("btnGreen").onclick = () => {
-    showLoading();
     let y = document.getElementById("yearSelect").value;
+
+    hideLegends();
+    document.getElementById("legendGREEN").style.display = "block";
+
+    if (sideBySideControl) map.removeControl(sideBySideControl);
+    if (compareLayerA) map.removeLayer(compareLayerA);
+    if (compareLayerB) map.removeLayer(compareLayerB);
+
     if (ndviLayer) map.removeLayer(ndviLayer);
-    ndviLayer = L.tileLayer(tileUrlGreen[y], { opacity: 1.0 }).addTo(map);  // Opacity 1.0
-    setTimeout(hideLoading, 500);
+    ndviLayer = L.tileLayer(tileUrlGreen[y], { opacity: 1.0 }).addTo(map);
 };
 
-// Biến động 2019→2025
+// ================== DIFF ==================
 document.getElementById("btnDiff").onclick = () => {
-    showLoading();
+    hideLegends();
+    document.getElementById("legendDiff").style.display = "block";
+
+    if (sideBySideControl) map.removeControl(sideBySideControl);
+    if (compareLayerA) map.removeLayer(compareLayerA);
+    if (compareLayerB) map.removeLayer(compareLayerB);
+
     if (ndviLayer) map.removeLayer(ndviLayer);
-    ndviLayer = L.tileLayer(tileUrlDiff["2019_2025"], { opacity: 1.0 }).addTo(map);  // Opacity 1.0
-    setTimeout(hideLoading, 500);
+    ndviLayer = L.tileLayer(tileUrlDiff["2019_2025"], { opacity: 1.0 }).addTo(map);
 };
 
-// So sánh 2 năm
+// ================== COMPARE ==================
 document.getElementById("compareBtn").onclick = () => {
     let a = document.getElementById("yearA").value;
     let b = document.getElementById("yearB").value;
 
     if (a === b) return alert("Hãy chọn 2 năm khác nhau!");
 
-    showLoading();
+    hideLegends();
+
     if (ndviLayer) map.removeLayer(ndviLayer);
-    ndviLayer = L.tileLayer(tileUrl[b], { opacity: 1.0 }).addTo(map);  // Opacity 1.0
-    setTimeout(hideLoading, 500);
+    if (sideBySideControl) map.removeControl(sideBySideControl);
+
+    compareLayerA = L.tileLayer(tileUrl[a], { opacity: 1.0 });
+    compareLayerB = L.tileLayer(tileUrl[b], { opacity: 1.0 });
+
+    sideBySideControl = L.control.sideBySide(compareLayerA, compareLayerB).addTo(map);
 };
 
-// ================== UI INTERACTIONS ==================
+// ================== HIDE LEGENDS ==================
+function hideLegends() {
+    document.getElementById("legendNDVI").style.display = "none";
+    document.getElementById("legendGREEN").style.display = "none";
+    document.getElementById("legendDiff").style.display = "none";
+}
 
+// ================== UI ==================
 document.getElementById("toggle-btn").onclick = () => {
     const sidebar = document.getElementById("sidebar");
     const mapEl = document.getElementById("map");
-    sidebar.classList.toggle("sidebar-collapsed");
-    if (sidebar.classList.contains("sidebar-collapsed")) {
-        mapEl.style.left = "0";
-    } else {
-        mapEl.style.left = "300px";
-    }
+    const isCollapsed = sidebar.classList.toggle("sidebar-collapsed");
+    mapEl.style.left = isCollapsed ? "0" : "300px";
 };
 
 document.getElementById("chartToggle").onclick = () => {
     const panel = document.getElementById("chartPanel");
     panel.classList.toggle("chart-collapsed");
 };
-
-function showLoading() {
-    document.getElementById("loading").style.display = "flex";
-}
-
-function hideLoading() {
-    document.getElementById("loading").style.display = "none";
-}

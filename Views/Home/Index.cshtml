@@ -49,11 +49,6 @@
                     <p>Tỷ lệ xanh</p>
                     <h2 id="ratioValue">-- %</h2>
                 </div>
-
-                <div class="stat-box">
-                    <p>Dữ liệu gần nhất</p>
-                    <h2 id="monthValue">--</h2>
-                </div>
             </div>
         </div>
 
@@ -63,22 +58,30 @@
             <p id="noteText">Chọn năm để xem đánh giá...</p>
         </div>
 
-        <!-- LEGEND -->
-        <div id="legend">
-            <h3 class="sub-title">🗺️ Chú giải</h3>
+        <!-- LEGEND NDVI -->
+        <div id="legendNDVI">
+            <h3 class="sub-title">🗺️ Chú giải NDVI</h3>
+            <div class="legend-item"><span class="color-box c1"></span> NDVI cao</div>
+            <div class="legend-item"><span class="color-box c2"></span> NDVI trung bình</div>
+            <div class="legend-item"><span class="color-box c3"></span> NDVI thấp</div>
+        </div>
 
-            <div class="legend-item">
-                <span class="color-box c1"></span> NDVI cao
-            </div>
-            <div class="legend-item">
-                <span class="color-box c2"></span> NDVI trung bình
-            </div>
-            <div class="legend-item">
-                <span class="color-box c3"></span> NDVI thấp
-            </div>
-            <div class="legend-item">
-                <span class="color-box border"></span> Ranh giới Củ Chi
-            </div>
+        <!-- LEGEND GREENMAP -->
+        <div id="legendGREEN" style="display:none;">
+            <h3 class="sub-title">🗺️ Chú giải GreenMap</h3>
+            <div class="legend-item"><span class="color-box c1"></span> Mảng xanh lớn</div>
+            <div class="legend-item"><span class="color-box c2"></span> Phân tán</div>
+            <div class="legend-item"><span class="color-box c3"></span> Ít/thưa</div>
+        </div>
+
+        <!-- LEGEND DIFF -->
+        <div id="legendDiff" style="display:none;">
+            <h3 class="sub-title">🌈 Chú giải biến động</h3>
+            <div class="legend-item"><span class="color-box diff1"></span> Giảm mạnh</div>
+            <div class="legend-item"><span class="color-box diff2"></span> Giảm nhẹ</div>
+            <div class="legend-item"><span class="color-box diff3"></span> Không đổi</div>
+            <div class="legend-item"><span class="color-box diff4"></span> Tăng nhẹ</div>
+            <div class="legend-item"><span class="color-box diff5"></span> Tăng mạnh</div>
         </div>
 
         <!-- COMPARE -->
@@ -90,17 +93,9 @@
                 <select id="yearB" class="select-styled"></select>
             </div>
 
-            <button id="compareBtn" class="btn-main" title="So sánh hai năm">
-                <i class="fa-solid fa-layer-group"></i> So sánh
-            </button>
-
-            <button id="btnDiff" class="btn-diff" title="Xem biến động 2019-2025">
-                🌈 Biến động 2019 → 2025
-            </button>
-
-            <button id="btnGreen" class="btn-green" title="Xem không gian xanh">
-                🌱 Không gian xanh
-            </button>
+            <button id="compareBtn" class="btn-main"><i class="fa-solid fa-layer-group"></i> So sánh</button>
+            <button id="btnDiff" class="btn-diff">Biến động 2019 → 2025</button>
+            <button id="btnGreen" class="btn-green">GreenMap</button>
         </div>
 
     </div>
@@ -108,11 +103,9 @@
     <!-- MAP -->
     <div id="map"></div>
 
-    <!-- CHART PANEL (Collapsible) -->
+    <!-- CHART PANEL -->
     <div id="chartPanel" class="chart-collapsed">
-        <button id="chartToggle" class="chart-toggle-btn" title="Thu gọn/Mở rộng biểu đồ">
-            <i class="fas fa-chart-line"></i>
-        </button>
+        <button id="chartToggle" class="chart-toggle-btn"><i class="fas fa-chart-line"></i></button>
         <div class="chart-content">
             <h3>Diện tích xanh theo năm</h3>
             <canvas id="chart"></canvas>
@@ -124,8 +117,9 @@
         <div class="spinner"></div>
     </div>
 
-    <!-- APP JS -->
+    <!-- JS -->
     <script src="~/js/app.js"></script>
+    <script src="https://unpkg.com/leaflet-side-by-side@2.0.1/dist/leaflet-side-by-side.min.js"></script>
 
 </body>
 </html>

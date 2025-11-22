@@ -9,7 +9,7 @@ body {
 #map {
     position: absolute;
     top: 0;
-    left: 300px;
+    left: 0; /* Thay 300px thành 0, vì sidebar hiện ban đầu */
     right: 0;
     bottom: 0;
     transition: left 0.3s ease; /* Animation cho sidebar */
@@ -26,12 +26,12 @@ body {
     padding: 22px;
     overflow-y: auto;
     box-shadow: 3px 0 15px rgba(255, 79, 149, 0.2);
-    transition: transform 0.3s ease, width 0.3s ease;
+    transition: left 0.3s ease; /* Thay transform thành left để khớp JS */
     z-index: 1000;
 }
 
 #sidebar.sidebar-collapsed {
-    transform: translateX(-100%);
+    left: -300px; /* Ẩn sidebar bằng left, không transform */
 }
 
 .title {
@@ -201,6 +201,7 @@ body {
 .btn-green:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(46, 204, 113, 0.3);
+    background: linear-gradient(45deg, #27ae60, #1e8449); /* Màu tối hơn khi hover để nổi bật */
 }
 
 /* CHART PANEL */
@@ -247,31 +248,6 @@ body {
     background: #e91e63;
 }
 
-/* LOADING */
-#loading {
-    display: none;
-    position: fixed;
-    top:0; left:0; right:0; bottom:0;
-    background: rgba(255,255,255,0.8);
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-    backdrop-filter: blur(5px); /* Hiệu ứng blur */
-}
-
-.spinner {
-    width: 60px;
-    height: 60px;
-    border: 6px solid #ffc0df;
-    border-top-color: #ff4f95;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
 /* RESPONSIVE */
 @media (max-width: 768px) {
     #sidebar {
@@ -293,10 +269,10 @@ body {
 @media (max-width: 480px) {
     #sidebar {
         width: 100%;
-        transform: translateX(-100%);
+        left: -100%; /* Ẩn full-width trên mobile */
     }
     #sidebar:not(.sidebar-collapsed) {
-        transform: translateX(0);
+        left: 0; /* Hiển thị khi mở */
     }
     #map {
         left: 0;
