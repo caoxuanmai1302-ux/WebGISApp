@@ -102,13 +102,13 @@ const ndviNotes = {
 const greenNotes = {
   2019: "Mảng xanh 2019 phân bố liên tục và rộng, phản ánh giai đoạn ổn định của sản xuất nông nghiệp. Các vùng trồng trọt truyền thống duy trì mật độ xanh cao và ít bị phân mảnh.",
 
-  2020: "GreenMap 2020 giảm nhẹ do tác động của thời tiết bất thường và hạn mặn ở một số khu vực. Tuy nhiên việc giảm không lớn và cấu trúc mảng xanh vẫn còn tương đối ổn định.",
+  2020: "GreenMap 2020 giảm mạnh do tác động của thời tiết bất thường và hạn mặn ở một số khu vực.",
 
   2021: "Diện tích xanh 2021 bắt đầu phục hồi sau giai đoạn biến động. Một số vùng nông nghiệp mở rộng diện tích canh tác, góp phần nâng tỷ lệ xanh toàn huyện.",
 
   2022: "GreenMap 2022 tăng mạnh rõ rệt, đạt mức cao nhất trong giai đoạn 2019–2025. Nhiều khu vực xanh hóa trở lại nhờ thời tiết thuận lợi và hoạt động sản xuất hồi phục hoàn toàn sau đại dịch.",
 
-  2023: "Năm 2023 có mức giảm nhẹ diện tích xanh, chủ yếu do chuyển đổi đất và mở rộng hạ tầng ở một số xã. Tuy nhiên độ bao phủ xanh tổng thể vẫn duy trì ở mức tốt.",
+  2023: "Năm 2023 có mức giảm diện tích xanh, chủ yếu do chuyển đổi đất và mở rộng hạ tầng ở một số xã. Tuy nhiên độ bao phủ xanh tổng thể vẫn duy trì ở mức tốt.",
 
   2024: "Mảng xanh 2024 tiếp tục suy giảm nhẹ do đô thị hóa và xây dựng hạ tầng. Mặc dù vậy, các vùng nông nghiệp trọng điểm vẫn giữ được diện tích xanh tương đối ổn định.",
 
