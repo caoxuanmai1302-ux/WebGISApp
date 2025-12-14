@@ -1,119 +1,163 @@
 ﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebGIS Không Gian Xanh Củ Chi</title>
-    <link rel="stylesheet" href="~/css/style.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebGIS Không Gian Xanh Củ Chi</title>
+
+  <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-    <div id="toggle-btn" title="Mở/Đóng sidebar">
-        <i class="fas fa-bars"></i>
-    </div>
+  <!-- Top-left toggle (giống GEE) -->
+  <button id="toggleBtn" class="gee-fab" title="Mở/Đóng panel">
+    <i class="fas fa-bars"></i>
+  </button>
 
-    <div id="sidebar" class="sidebar-collapsed" 
-         style="resize: horizontal; overflow:auto; min-width:220px; max-width:500px;">
-        
-        <h2 class="title">🌿 Không Gian Xanh Củ Chi</h2>
+  <div class="gee-layout">
+    <!-- LEFT PANEL (GEE-like) -->
+    <aside id="sidebar" class="gee-panel">
+      <div class="gee-title">
+        <div class="gee-title-main">🌿 WebGIS Không Gian Xanh</div>
+        <div class="gee-title-sub">Củ Chi • NDVI 2019–2025</div>
+      </div>
 
-        <label class="label">Chọn năm:</label>
-        <select id="yearSelect" class="select-styled"></select>
+      <div class="gee-section">
+        <div class="gee-section-h">Bộ lọc</div>
 
-        <!-- BUTTONS -->
-        <div style="margin-top: 15px;">
-            <button id="btnNdvi" class="btn-mode">
-                <i class="fa-solid fa-leaf"></i> NDVI
-            </button>
+        <label class="gee-label">Chọn năm:</label>
+        <select id="yearSelect" class="gee-select"></select>
 
-            <button id="btnGreenmap" class="btn-mode">
-                <i class="fa-solid fa-tree"></i> GreenMap
-            </button>
+        <div class="gee-btnrow">
+          <button id="btnNdvi" class="gee-btn gee-btn-primary">
+            <i class="fa-solid fa-leaf"></i> NDVI
+          </button>
+
+          <button id="btnGreenmap" class="gee-btn">
+            <i class="fa-solid fa-tree"></i> GreenMap
+          </button>
         </div>
 
-        <div style="margin-top:10px;">
-            <button id="btnDiff" class="btn-diff">Biến động 2019 → 2025</button>
+        <button id="btnDiff" class="gee-btn gee-btn-warn">
+          <i class="fa-solid fa-wave-square"></i> Biến động 2019 → 2025
+        </button>
+      </div>
+
+      <div class="gee-section">
+  <div class="gee-section-h">Ranh giới</div>
+
+  <label class="gee-check">
+    <span>Ranh huyện (đỏ)</span>
+    <input type="checkbox" id="cbHuyen" checked>
+  </label>
+
+  <label class="gee-check">
+    <span>Ranh xã (xanh)</span>
+    <input type="checkbox" id="cbXa" checked>
+  </label>
+</div>
+
+
+      <div class="gee-section">
+        <div class="gee-section-h">Thống kê nhanh</div>
+        <div class="gee-stats">
+          <div class="gee-stat">
+            <div class="gee-stat-label">Diện tích xanh</div>
+            <div class="gee-stat-value" id="areaValue">-- km²</div>
+          </div>
+          <div class="gee-stat">
+            <div class="gee-stat-label">Tỷ lệ xanh</div>
+            <div class="gee-stat-value" id="ratioValue">-- %</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gee-section">
+        <div class="gee-section-h">Đánh giá</div>
+        <div class="gee-note">
+          <div class="gee-note-icon">📝</div>
+          <div class="gee-note-text" id="noteText">Chọn năm để xem đánh giá...</div>
+        </div>
+      </div>
+
+      <!-- NDVI legend: dạng “thanh gradient đủ màu” giống GEE -->
+      <div class="gee-section" id="legendNDVI">
+        <div class="gee-section-h">Chú giải NDVI</div>
+        <div class="gee-legend">
+          <div class="gee-legend-bar ndvi-bar"></div>
+          <div class="gee-legend-minmax">
+            <span>0</span><span>1</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diff legend: bạn có thể để 3 mức (đỏ-vàng-xanh) hoặc 5 mức -->
+      <div class="gee-section" id="legendDiff" style="display:none;">
+        <div class="gee-section-h">Chú giải biến động</div>
+        <div class="gee-legend-list">
+          <div class="gee-legend-item"><span class="swatch diff-loss"></span> Giảm (đỏ)</div>
+          <div class="gee-legend-item"><span class="swatch diff-stable"></span> Không đổi (vàng)</div>
+          <div class="gee-legend-item"><span class="swatch diff-gain"></span> Tăng (xanh)</div>
+        </div>
+      </div>
+
+      <div class="gee-section">
+        <div class="gee-section-h">So sánh 2 năm</div>
+        <div class="gee-compare">
+          <select id="yearA" class="gee-select"></select>
+          <select id="yearB" class="gee-select"></select>
         </div>
 
-        <div id="miniStats">
-            <h3 class="sub-title">📊 Thống kê nhanh</h3>
-
-            <div class="stat-grid">
-                <div class="stat-box">
-                    <p>Diện tích xanh</p>
-                    <h2 id="areaValue">-- km²</h2>
-                </div>
-
-                <div class="stat-box">
-                    <p>Tỷ lệ xanh</p>
-                    <h2 id="ratioValue">-- %</h2>
-                </div>
-            </div>
-        </div>
-
-        <div id="yearNote" class="note-box">
-            <h3 class="sub-title">📝 Đánh giá</h3>
-            <p id="noteText">Chọn năm để xem đánh giá...</p>
-        </div>
-        <div id="legendNDVI">
-            <h3 class="sub-title">🗺️ Chú giải NDVI</h3>
-            <div class="legend-item"><span class="color-box c1"></span> NDVI cao</div>
-            <div class="legend-item"><span class="color-box c2"></span> NDVI trung bình</div>
-            <div class="legend-item"><span class="color-box c3"></span> NDVI thấp</div>
-        </div>
-
-        <div id="legendDiff" style="display:none;">
-            <h3 class="sub-title">🌈 Chú giải biến động</h3>
-            <div class="legend-item"><span class="color-box diff1"></span> Giảm mạnh</div>
-            <div class="legend-item"><span class="color-box diff2"></span> Giảm nhẹ</div>
-            <div class="legend-item"><span class="color-box diff3"></span> Không đổi</div>
-            <div class="legend-item"><span class="color-box diff4"></span> Tăng nhẹ</div>
-            <div class="legend-item"><span class="color-box diff5"></span> Tăng mạnh</div>
-        </div>
-
-        <div id="compare">
-            <h3 class="sub-title">🔍 So sánh 2 năm</h3>
-
-            <div class="compare-grid">
-                <select id="yearA" class="select-styled"></select>
-                <select id="yearB" class="select-styled"></select>
-            </div>
-
-            <button id="compareBtn" class="btn-main">
-                <i class="fa-solid fa-layer-group"></i> So sánh
-            </button>
-
-            <div id="opacityCompare" style="display:none; margin-top:15px;">
-                <label>Kéo để so sánh:</label>
-                <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="0.5">
-            </div>
-        </div>
-
-    </div>
-
-    <div id="map"></div>
-
-
-    <div id="chartPanel" class="chart-collapsed">
-        <button id="chartToggle" class="chart-toggle-btn">
-            <i class="fas fa-chart-line"></i>
+        <button id="compareBtn" class="gee-btn">
+          <i class="fa-solid fa-layer-group"></i> So sánh
         </button>
 
-        <div class="chart-content">
-            <h3>Diện tích xanh theo năm</h3>
-            <canvas id="chart"></canvas>
+        <div id="opacityCompare" class="gee-slider" style="display:none;">
+          <div class="gee-label">Kéo để so sánh:</div>
+          <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="0.5">
         </div>
-    </div>
+      </div>
+    </aside>
 
-    <div id="loading">
-        <div class="spinner"></div>
-    </div>
+    <!-- MAP -->
+    <main class="gee-mapwrap">
+      <div id="map"></div>
+    </main>
+  </div>
 
-    <script src="~/js/app.js"></script>
+  <!-- RIGHT CHART PANEL (nút bên phải) -->
+  <div id="chartPanel" class="chart-panel chart-collapsed">
+    <button id="chartToggle" class="chart-toggle-btn" title="Mở biểu đồ">
+      <i class="fas fa-chart-line"></i>
+    </button>
 
+    <div class="chart-content">
+  <div class="chart-title">📈 Biểu đồ</div>
+  <div class="chart-sub">Chọn loại biểu đồ</div>
+
+  <select id="chartMetric" class="gee-select" style="margin-bottom:10px">
+    <option value="green_km2">Diện tích xanh (km²)</option>
+    <option value="green_ratio">Tỷ lệ xanh (%)</option>
+    <option value="ndvi_mean">NDVI trung bình</option>
+    <option value="ndvi_minmax">NDVI min/max</option>
+    <option value="diff_mean">Biến động NDVI (2019→2025)</option>
+  </select>
+
+  <canvas id="chart"></canvas>
+</div>
+  </div>
+
+  <!-- Loading -->
+  <div id="loading" class="loading hidden">
+    <div class="spinner"></div>
+    <div class="loading-text">Đang tải dữ liệu...</div>
+  </div>
+
+  <script src="~/js/app.js" asp-append-version="true"></script>
 </body>
 </html>

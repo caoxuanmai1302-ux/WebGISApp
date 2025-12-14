@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\data\\green.json"
     },
     {
+      "Id": "D:\\WebGISApp\\wwwroot\\data\\huyen.geojson",
+      "PackagePath": "staticwebassets\\data\\huyen.geojson"
+    },
+    {
       "Id": "D:\\WebGISApp\\wwwroot\\data\\ndvi\\green_2019.tif",
       "PackagePath": "staticwebassets\\data\\ndvi\\green_2019.tif"
     },
@@ -75,6 +79,18 @@
     {
       "Id": "D:\\WebGISApp\\wwwroot\\data\\ndvi\\ndvi_2025.tif",
       "PackagePath": "staticwebassets\\data\\ndvi\\ndvi_2025.tif"
+    },
+    {
+      "Id": "D:\\WebGISApp\\wwwroot\\data\\xa.geojson",
+      "PackagePath": "staticwebassets\\data\\xa.geojson"
+    },
+    {
+      "Id": "D:\\WebGISApp\\wwwroot\\data\\xa_diff.geojson",
+      "PackagePath": "staticwebassets\\data\\xa_diff.geojson"
+    },
+    {
+      "Id": "D:\\WebGISApp\\wwwroot\\data\\xa_stats.geojson",
+      "PackagePath": "staticwebassets\\data\\xa_stats.geojson"
     },
     {
       "Id": "D:\\WebGISApp\\wwwroot\\favicon.ico",

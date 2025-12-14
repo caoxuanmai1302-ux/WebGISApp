@@ -1,310 +1,289 @@
-/* ========================
-   GLOBAL
-======================== */
-body {
-    margin: 0;
-    font-family: "Segoe UI", sans-serif;
-    background: linear-gradient(135deg, #ffeaf3 0%, #fff 100%);
-    overflow: hidden;
+:root{
+  --bg:#eef1f4;
+  --panel:#ffffff;
+  --border:#e5e7eb;
+  --text:#111827;
+  --muted:#6b7280;
+  --shadow:0 16px 40px rgba(0,0,0,.12);
+  --r:18px;
+
+  --green:#22c55e;
+  --greenSoft:#ecfdf5;
+
+  --warn:#f59e0b;
+  --warnSoft:#fff7ed;
+
+  --blueSoft:#eff6ff;
+
+  --pink:#ff4f95;    /* nút biểu đồ */
+  --pink2:#e91e63;
 }
 
-/* ========================
-   SIDEBAR
-======================== */
-#sidebar {
-    position: absolute;
-    top: 0;
-    left: 0;
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
+body{background:var(--bg);color:var(--text);overflow:hidden}
 
-    width: 300px;
-    min-width: 220px;
-    max-width: 500px;
-
-    height: 100vh;
-    padding: 22px;
-    background: linear-gradient(180deg, #fff 0%, #ffe0ec 100%);
-
-    resize: horizontal;
-    overflow: auto;
-
-    box-shadow: 3px 0 15px rgba(255, 79, 149, 0.25);
-    transition: left 0.25s ease, width 0.1s;
-
-    z-index: 1000;
+/* ===== Layout ===== */
+.gee-layout{
+  height:100vh;
+  display:grid;
+  grid-template-columns: 380px 1fr;
+  gap:12px;
+  padding:12px;
+}
+body.panel-collapsed .gee-layout{
+  grid-template-columns: 0px 1fr;
 }
 
-#sidebar.sidebar-collapsed {
-    left: -320px !important;
+/* ===== Left panel ===== */
+.gee-panel{
+  height:calc(100vh - 24px);
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:14px;
+  overflow:auto;
+  box-shadow:var(--shadow);
+  transition: transform .18s ease;
+}
+.gee-panel.collapsed{ transform: translateX(-110%); }
+
+/* scroll đẹp */
+.gee-panel::-webkit-scrollbar{width:10px}
+.gee-panel::-webkit-scrollbar-thumb{
+  background:#d7dbe2;border-radius:10px;border:2px solid #f4f6f8
+}
+.gee-panel::-webkit-scrollbar-track{background:transparent}
+
+/* ===== Floating toggle button ===== */
+.gee-fab{
+  position:fixed;
+  z-index:9999;
+  top:22px; left:22px;
+  width:46px; height:46px;
+  border:none;
+  border-radius:16px;
+  background:#fff;
+  border:1px solid var(--border);
+  box-shadow:0 14px 35px rgba(0,0,0,.14);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:.15s;
+}
+.gee-fab:hover{ transform: translateY(-1px); }
+
+/* ===== Title block ===== */
+.gee-title{
+  padding:12px 12px 10px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:linear-gradient(180deg,#ffffff 0%, #fafafa 100%);
+}
+.gee-title-main{font-weight:950;font-size:18px;letter-spacing:.2px}
+.gee-title-sub{opacity:.75;font-size:12px;margin-top:4px}
+
+/* ===== Sections ===== */
+.gee-section{
+  margin-top:12px;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:#fff;
+}
+.gee-section-h{
+  font-weight:950;
+  font-size:13px;
+  color:#111827;
+  margin-bottom:10px;
+}
+.gee-label{display:block;font-size:12px;color:var(--muted);font-weight:800;margin:6px 0}
+
+/* ===== Select ===== */
+.gee-select{
+  width:100%;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#fff;
+  font-weight:800;
+  outline:none;
+}
+.gee-select:focus{
+  border-color:#b9c7ff;
+  box-shadow:0 0 0 4px rgba(59,130,246,.12);
 }
 
-/* ========================
-   MAP
-======================== */
-#map {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 300px;
-    transition: left 0.25s ease;
+/* ===== Buttons ===== */
+.gee-btnrow{display:flex;gap:10px;margin-top:10px}
+.gee-btn{
+  width:100%;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#fff;
+  cursor:pointer;
+  font-weight:900;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:.15s;
+}
+.gee-btn:hover{ background:#f7f7f8; transform: translateY(-1px); }
+
+.gee-btn-primary{ background:var(--greenSoft); border-color:#b7f0c7; }
+.gee-btn-warn{ background:var(--warnSoft); border-color:#ffd9a6; }
+
+/* active state (JS sẽ add class) */
+.gee-btn.is-active{
+  border-color:#86efac;
+  box-shadow:0 0 0 4px rgba(34,197,94,.10);
 }
 
-#sidebar.sidebar-collapsed ~ #map {
-    left: 0 !important;
+/* ===== Checkbox ===== */
+.gee-check{
+  display:flex;align-items:center;gap:10px;
+  margin:8px 0;
+  font-weight:800;
+}
+.gee-check input{width:16px;height:16px;accent-color:var(--pink)}
+
+/* ===== Stats ===== */
+.gee-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gee-stat{
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:10px 12px;
+  background:linear-gradient(180deg,#fff 0%, #fafafa 100%);
+}
+.gee-stat-label{font-size:12px;color:var(--muted);font-weight:900}
+.gee-stat-value{margin-top:6px;font-size:18px;font-weight:950}
+
+/* ===== Note ===== */
+.gee-note{
+  display:flex;gap:10px;
+  padding:10px;
+  border:1px dashed #cfe9d6;
+  border-radius:16px;
+  background:#f2fff2;
+}
+.gee-note-icon{font-size:18px}
+.gee-note-text{font-size:13px;line-height:1.35;font-weight:750;color:#14532d}
+
+/* ===== Legends ===== */
+.gee-legend-bar{
+  height:12px;border-radius:999px;border:1px solid var(--border);
+  overflow:hidden;
+}
+.ndvi-bar{
+  background: linear-gradient(to right,
+    #FF0000, #FF7F00, #FFFF00, #ADFF2F, #00FF00, #00FFFF, #007FFF, #0000FF
+  );
+}
+.gee-legend-minmax{
+  display:flex;justify-content:space-between;
+  font-size:12px;color:var(--muted);
+  margin-top:8px;font-weight:800;
+}
+.gee-legend-list{display:flex;flex-direction:column;gap:10px}
+.gee-legend-item{display:flex;align-items:center;gap:10px;font-weight:850}
+.swatch{width:14px;height:14px;border-radius:6px;border:1px solid #ddd}
+.diff-loss{background:#FF0000}
+.diff-stable{background:#FFD700}
+.diff-gain{background:#00FF00}
+
+/* ===== Compare ===== */
+.gee-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gee-slider{margin-top:10px}
+.gee-slider input{width:100%}
+
+/* ===== Map wrap ===== */
+.gee-mapwrap{
+  height:calc(100vh - 24px);
+  border-radius:22px;
+  overflow:hidden;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  background:#dfe3ea;
+}
+#map{height:100%;width:100%}
+
+/* Leaflet controls đẹp nhẹ */
+.leaflet-control-zoom a{
+  border-radius:12px !important;
+  border:1px solid var(--border) !important;
+  box-shadow:0 12px 30px rgba(0,0,0,.14) !important;
+}
+.leaflet-control-attribution{
+  background:rgba(255,255,255,.7) !important;
+  border-radius:12px;
+  margin:10px !important;
 }
 
-/* ========================
-   TOGGLE BUTTON
-======================== */
-#toggle-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 2001;
-
-    background: linear-gradient(45deg, #ff4f95, #ffbcd6);
-    color: white;
-
-    padding: 12px 14px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 18px;
-
-    box-shadow: 0 4px 10px rgba(255, 79, 149, 0.35);
-    transition: 0.25s;
+/* ===== Right chart panel (keep pink button) ===== */
+.chart-panel{
+  position:fixed;
+  z-index:9998;
+  top:22px;
+  right:22px;
+  width:380px;
+  max-width:calc(100vw - 44px);
+  background:linear-gradient(135deg,#fff,#ffeaf3);
+  border:1px solid var(--border);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  transition: transform .18s ease, width .18s ease, height .18s ease;
 }
-#toggle-btn:hover {
-    transform: scale(1.1);
-}
+.chart-content{padding:14px 14px 16px}
+.chart-title{font-weight:950;font-size:16px}
+.chart-sub{opacity:.75;font-size:12px;margin:4px 0 10px;font-weight:800}
 
-/* ========================
-   SELECT
-======================== */
-.select-styled {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #ffe0ec;
-    border-radius: 8px;
-    background: white;
-    margin-top: 5px;
+.chart-toggle-btn{
+  position:absolute;
+  right:12px;
+  top:12px;
+  width:52px;height:52px;
+  border:none;
+  border-radius:999px;
+  background:var(--pink);
+  color:#fff;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 16px 35px rgba(233,30,99,.25);
+  transition:.15s;
 }
+.chart-toggle-btn:hover{ background:var(--pink2); transform: translateY(-1px); }
 
-/* ========================
-   NDVI & GREENMAP – 2 NÚT NGANG
-======================== */
-.mode-row {
-    display: flex;
-    width: 100%;
-    border-radius: 14px;
-    overflow: hidden;
-    margin-top: 20px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+/* collapsed => chỉ còn nút tròn hồng */
+.chart-panel.chart-collapsed{
+  width:72px;
+  height:72px;
+  padding:0;
+  background:transparent;
+  border:none;
+  box-shadow:none;
 }
-
-.btn-mode {
-    flex: 1;
-    padding: 14px;
-    color: white;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    font-size: 15px;
-    transition: 0.2s;
+.chart-panel.chart-collapsed .chart-content{display:none}
+.chart-panel.chart-collapsed .chart-toggle-btn{
+  position:fixed;
+  right:22px;
+  top:22px;
 }
 
-/* NDVI */
-#btnNdvi {
-    background: linear-gradient(45deg,#00b894,#00cec9);
+/* ===== Loading ===== */
+.loading{
+  position:fixed;inset:0;
+  background:rgba(255,255,255,.75);
+  z-index:99999;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:12px;
 }
-#btnNdvi:hover {
-    background: linear-gradient(45deg,#00cec9,#009b9b);
+.loading.hidden{display:none}
+.spinner{
+  width:36px;height:36px;
+  border:4px solid #ddd;
+  border-top-color:#16a34a;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
 }
-
-/* GREENMAP */
-#btnGreenmap {
-    background: linear-gradient(45deg,#2ecc71,#27ae60);
-}
-#btnGreenmap:hover {
-    background: linear-gradient(45deg,#27ae60,#1e8449);
-}
-
-/* ========================
-   BIẾN ĐỘNG
-======================== */
-.btn-diff {
-    width: 100%;
-    padding: 14px;
-    margin-top: 15px;
-
-    background: linear-gradient(45deg,#6f2da8,#9c27b0);
-    border-radius: 14px;
-
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-
-    border: none;
-    transition: 0.25s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.13);
-}
-.btn-diff:hover {
-    transform: translateY(-3px);
-}
-
-/* ========================
-   SO SÁNH – STYLE CŨ
-======================== */
-.btn-main {
-    width: 100%;
-    padding: 14px;
-    border-radius: 14px;
-    margin-top: 10px;
-
-    background: linear-gradient(45deg, #ff4f95, #e91e63);
-    color: white;
-    border: none;
-
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-
-    box-shadow: 0 4px 10px rgba(0,0,0,0.13);
-}
-.btn-main:hover {
-    transform: translateY(-3px);
-}
-
-/* ========================
-   STAT + NOTE
-======================== */
-.stat-grid {
-    display: grid;
-    gap: 12px;
-    margin-top: 15px;
-}
-.stat-box {
-    background: linear-gradient(135deg,#ffe0ec,#ffbcd6);
-    padding: 15px;
-    border-radius: 12px;
-}
-
-.note-box {
-    background: linear-gradient(135deg,#fff3fa,#ffeaf3);
-    padding: 15px;
-    border-radius: 12px;
-    margin-top: 15px;
-}
-
-/* ========================
-   LEGENDS
-======================== */
-.legend-item {
-    display: flex;
-    margin-bottom: 8px;
-}
-.color-box {
-    width: 24px;
-    height: 14px;
-    border-radius: 4px;
-    margin-right: 10px;
-}
-
-.c1 { background:#006400; }
-.c2 { background:#fee08b; }
-.c3 { background:#a50026; }
-
-.diff1 { background:#a50026; }
-.diff2 { background:#f46d43; }
-.diff3 { background:#fee08b; }
-.diff4 { background:#66bd63; }
-.diff5 { background:#006837; }
-
-/* ========================
-   CHART PANEL (FIX ICON)
-======================== */
-#chartPanel {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    width: 350px;
-
-    background: linear-gradient(135deg,#fff,#ffeaf3);
-    padding: 15px;
-    border-radius: 16px;
-
-    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
-    transition: .25s;
-    z-index: 1500;
-}
-
-#chartPanel.chart-collapsed {
-    width: 60px;
-    height: 60px;
-    padding: 0;
-
-    border-radius: 50%;
-    overflow: hidden;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#chartPanel.chart-collapsed .chart-content {
-    display: none;
-}
-
-/* NÚT ICON KHÔNG BAO GIỜ LỆCH */
-.chart-toggle-btn {
-    background: #ff4f95;
-    color: white;
-
-    border: none;
-    width: 48px;
-    height: 48px;
-
-    border-radius: 50%;
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 20px;
-    transition: 0.25s;
-
-    position: relative;
-}
-
-.chart-toggle-btn:hover {
-    background: #e91e63;
-}
-
-/* ========================
-   RESPONSIVE
-======================== */
-@media (max-width: 768px) {
-    #sidebar {
-        width: 250px;
-    }
-    #map {
-        left: 250px;
-    }
-}
-
-@media (max-width: 480px) {
-    #sidebar {
-        width: 100%;
-        left: -100%;
-    }
-    #sidebar:not(.sidebar-collapsed) {
-        left: 0;
-    }
-    #map {
-        left: 0;
-    }
-    #chartPanel {
-        width: 90%;
-        left: 5%;
-    }
-}
+.loading-text{font-weight:950;color:#111827;opacity:.85}
+@keyframes spin{to{transform:rotate(360deg)}}

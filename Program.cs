@@ -1,23 +1,32 @@
+using Microsoft.AspNetCore.StaticFiles;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+
+// ✅ CHỈ GIỮ 1 UseStaticFiles và map .geojson
+var provider = new FileExtensionContentTypeProvider();
+provider.Mappings[".geojson"] = "application/geo+json";
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    ContentTypeProvider = provider,
+    // Nếu máy bạn vẫn stubborn thì bật thêm cái này:
+    // ServeUnknownFileTypes = true,
+    // DefaultContentType = "application/json"
+});
 
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
