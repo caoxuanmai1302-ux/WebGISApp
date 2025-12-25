@@ -1,26 +1,26 @@
 // ================== TILE URLS ==================
 const tileUrl = {
-  "2019": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/2712db74b125ba90a3ba64d793f62902-e5e2dee88801cb1046647ac3cc1281ad/tiles/{z}/{x}/{y}",
-  "2020": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/50e18a01e7a42dfb1b1283fa0f47921d-576746511c9c1f9e9b9911f5cc5f51b1/tiles/{z}/{x}/{y}",
-  "2021": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/45d30a79d30afcfc142446410ab0e108-41276e9d36724dd0f3d89a9ee748d659/tiles/{z}/{x}/{y}",
-  "2022": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/fea88086fdb3cbfef455c63c240d1e2e-ddcb0fcd0674775f3ce4c0b09f1edc2f/tiles/{z}/{x}/{y}",
-  "2023": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/085f9bee1e55e888f32b05725b01f734-77878ab46d2812267c75ec12490fed9a/tiles/{z}/{x}/{y}",
-  "2024": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/183b45a1e6732e7ebb4866da6c9b97c4-6711af69632a587c4a353ee8da6c5e48/tiles/{z}/{x}/{y}",
-  "2025": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/db49a77e66f9e7e3e85614b09dcc9ca7-180f06761db713e0e42be7f8803e7520/tiles/{z}/{x}/{y}"
+  "2019": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/e7a5128e8942e2b0d30fedf54efd5dc1-ab40bb5541630556948daeaa3b5b132a/tiles/{z}/{x}/{y}",
+  "2020": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/1a291f251688cb7465e065c8d3ce3c93-1cda17bbc00e948e428cb156adf6cf7c/tiles/{z}/{x}/{y}",
+  "2021": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/95d21c5fe60806142737b74a72eb711e-eba43f1b31f606e51ef04d73ba6c0f4c/tiles/{z}/{x}/{y}",
+  "2022": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/e17c12d0a4615491464b72fd2e7ba6fa-abd0f0dc98e2e0a58b7b2fafe729c769/tiles/{z}/{x}/{y}",
+  "2023": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/43c896ad477dad7ac4ad2ea8b46123d8-cb948fac76b4922917d0e3a37f83be07/tiles/{z}/{x}/{y}",
+  "2024": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/8cc5be851a6ef74844fe4907c888012a-9b918c5b8795714cc8dec2bb7c39c71e/tiles/{z}/{x}/{y}",
+  "2025": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/9fed23b84d46cbc3add1326c7d95b798-82241ebbf16ae661f90ebaf8d6391758/tiles/{z}/{x}/{y}"
 };
 
 const tileUrlGreen = {
-  "2019": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/df89965b827399cd38a9777fd8bc9a54-4c2b31e0f02658ea6f58dc52f2515dc8/tiles/{z}/{x}/{y}",
-  "2020": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/7a9f815384602080a6a1143ab873a617-c2ac165c615024122176d9b8eae35bb7/tiles/{z}/{x}/{y}",
-  "2021": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/a65c16be083e7924e2b8f182ba4b1648-119ee5407c79a0543ca6170497c5b21b/tiles/{z}/{x}/{y}",
-  "2022": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/55828b5d3078fb9eb61112f1a7cc01b6-11f5c7f02a1f0bd4f0053e40b24d540d/tiles/{z}/{x}/{y}",
-  "2023": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/5f21c8b4702470a5495a4d3b32b7d70c-43dfc7bc3d238219c0d60aad52a9305d/tiles/{z}/{x}/{y}",
-  "2024": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/218fd05b506c4760acb6876ceca219b5-b97c5dbd70480e64126701428676f433/tiles/{z}/{x}/{y}",
-  "2025": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/dbdf3b55733d2c1861c1bf9eab05918e-02e40966f39e9dcf59c62e990fb9364e/tiles/{z}/{x}/{y}"
+  "2019": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/3cfbb491753d50e20ef154a9dfcd7291-a44cb4dde7e49c85338ec5ac0d93a5ef/tiles/{z}/{x}/{y}",
+  "2020": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/48e3318c6feb6cf253e4f129ba2831e6-81dd8154ae28ce7a2ce09fae4d27ca66/tiles/{z}/{x}/{y}",
+  "2021": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/20344b5d14a3fcc99390a624d86a3080-e0f552a4bdeaf99047789fd23b61ec6a/tiles/{z}/{x}/{y}",
+  "2022": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/46c5d54e79f5a2a1215ebf34fa449ead-a68e947943b2292d202b7556405f37b4/tiles/{z}/{x}/{y}",
+  "2023": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/9b109fb7bd15dca2a30a0e73fcdfd7f6-45ff03a96bd874a71eca452890613b22/tiles/{z}/{x}/{y}",
+  "2024": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/e33202596c4e4088acef4b7764b2b9c9-13e5762fa61ae5bb76355d4ab56c0621/tiles/{z}/{x}/{y}",
+  "2025": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/22d7249ad0b793b299212c33b5722b8b-5f31df865297cd28bc931e1bf5434f8d/tiles/{z}/{x}/{y}"
 };
 
 const tileUrlDiff = {
-  "2019_2025": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/ad073ad1db5b8dc7f16074c8b549f1c5-a1bae607a566aa642eec4f85aaa3ab85/tiles/{z}/{x}/{y}"
+  "2019_2025": "https://earthengine.googleapis.com/v1/projects/tidy-centaur-477505-s2/maps/7cb13909ecbff0050f7084d2baa1005b-cd75ed391dbdd66224ccc528a0be1ee6/tiles/{z}/{x}/{y}"
 };
 
 // ================== MODE ==================
